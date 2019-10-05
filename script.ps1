@@ -4,15 +4,15 @@
 # using Azure Network watcher to generate resource associations
 # which will be used to build the Azure Network topolgy
 $params = @{
-    Name = 'NetworkWatcher_centralindia'
+    Name          = 'NetworkWatcher_centralindia'
     ResourceGroup = 'NetworkWatcherRG'
 }
 
 $networkWatcher = Get-AzNetworkWatcher @params 
 $ResourceGroups = Get-AzResourceGroup | 
-    Where-Object { $_.ResourceGroupName -in 'DEMO-RESOURCE-GROUP'} |
-    # Where-Object { $_.ResourceGroupName -in 'my-resource-group','DEMO-RESOURCE-GROUP', 'test-resource-group', 'DEMO2-RESOURCE-GROUP'  } |
-ForEach-Object ResourceGroupName  
+    # Where-Object { $_.ResourceGroupName -in 'DEMO-RESOURCE-GROUP' } |
+    Where-Object { $_.ResourceGroupName -in 'my-resource-group','DEMO-RESOURCE-GROUP', 'test-resource-group', 'DEMO2-RESOURCE-GROUP'  } |
+    ForEach-Object ResourceGroupName  
 
 <#
 $Topology = Get-AzNetworkWatcherTopology -NetworkWatcher $networkWatcher -TargetResourceGroupName 'demo-resource-group' -Verbose
@@ -69,7 +69,7 @@ $Color = @{
 
 #region graph-generation
 Write-Host "[+] Starting topology graph generation`n`t- Target Resource Groups: [$ResourceGroups]`n`t- Network Watcher: [$($networkWatcher.Name)]" -ForegroundColor DarkCyan
-Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ;rankdir='TB'} {
+Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ; rankdir = 'TB' } {
     foreach ($ResourceGroup in $ResourceGroups) {
         Write-Host "`t[+] Working on `"Graph$UniqueIdentifier`" for ResourceGroup: `"$ResourceGroup`"" -ForegroundColor Yellow
         SubGraph "$($ResourceGroup.Replace('-', ''))" @{label = $ResourceGroup; labelloc = 'b' } {
@@ -82,80 +82,82 @@ Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ;rankdir='TB'} {
             Write-Host "`t`t[+] Parsing Network topology objects to find associations" -ForegroundColor Green
             $data = @()
             $data += $Topology.Resources | 
-            Select-Object @{n = 'from'; e = { $_.name } }, 
-            @{n = 'FromCategory'; e = { $_.id.Split('/', 8)[-1] } },
-            Associations, 
-            @{n = 'To'; e = { ($_.AssociationText | ConvertFrom-Json) | Select-Object name, AssociationType, resourceID } } |
-            ForEach-Object {
-                if ($_.to) {
-                    Foreach ($to in $_.to) {
+                Select-Object @{n = 'from'; e = { $_.name } }, 
+                @{n = 'FromCategory'; e = { $_.id.Split('/', 8)[-1] } },
+                Associations, 
+                @{n = 'To'; e = { ($_.AssociationText | ConvertFrom-Json) | Select-Object name, AssociationType, resourceID } } |
+                ForEach-Object {
+                    if ($_.to) {
+                        Foreach ($to in $_.to) {
+                            $i = 1
+                            $fromcateg = $_.FromCategory.split('/', 4).ForEach( { if ($i % 2) { $_ }; $i = $i + 1 }) -join '/'
+                            [PSCustomObject]@{
+                                fromcateg   = $fromCateg
+                                from        = $_.from
+                                to          = $to.name
+                                association = $to.associationType
+                                toCateg     = (($to.resourceID -split 'providers/')[1] -split '/')[1]
+                                rank        = $rank["$($FromCateg.split('/')[0])"]
+                            }
+                        }
+                    }
+                    else {
                         $i = 1
                         $fromcateg = $_.FromCategory.split('/', 4).ForEach( { if ($i % 2) { $_ }; $i = $i + 1 }) -join '/'
                         [PSCustomObject]@{
                             fromcateg   = $fromCateg
                             from        = $_.from
-                            to          = $to.name
-                            association = $to.associationType
-                            toCateg     = (($to.resourceID -split 'providers/')[1] -split '/')[1]
+                            to          = ''
+                            association = ''
+                            toCateg     = ''
                             rank        = $rank["$($FromCateg.split('/')[0])"]
                         }
                     }
-                }
-                else {
-                    $i = 1
-                    $fromcateg = $_.FromCategory.split('/', 4).ForEach( { if ($i % 2) { $_ }; $i = $i + 1 }) -join '/'
-                    [PSCustomObject]@{
-                        fromcateg   = $fromCateg
-                        from        = $_.from
-                        to          = ''
-                        association = ''
-                        toCateg     = ''
-                        rank        = $rank["$($FromCateg.split('/')[0])"]
-                    }
-                }
-            } | 
-            Sort-Object Rank
+                } | 
+                Sort-Object Rank
             #endregion parsing-topology-and-finding-associations
             
             #region plotting-edges-to-nodes
             $data | 
-            Where-Object to | 
-            ForEach-Object {
-                if ($_.Association -eq 'Contains') {
-                    Edge -From "$UniqueIdentifier$($_.from)" `
-                         -to "$UniqueIdentifier$($_.to)" `
-                         -Attributes @{
-                             arrowhead = 'box';
-                             style = 'dotted';
-                             label = 'Contains'
-                            }
+                Where-Object to | 
+                ForEach-Object {
+                    if ($_.Association -eq 'Contains') {
+                        Edge -From "$UniqueIdentifier$($_.from)" `
+                            -to "$UniqueIdentifier$($_.to)" `
+                            -Attributes @{
+                            arrowhead = 'box';
+                            style     = 'dotted';
+                            label     = 'Contains'
+                        }
+                    }
+                    else {
+                        Edge -From "$UniqueIdentifier$($_.from)" `
+                            -to "$UniqueIdentifier$($_.to)" 
+                    }
                 }
-                else {
-                    Edge -From "$UniqueIdentifier$($_.from)" `
-                         -to "$UniqueIdentifier$($_.to)" 
-                }
-            }
             #endregion plotting-edges-to-nodes
 
             #region plotting-all-publicIP-nodes
             $pubip = @()
             $pubip += $data | 
-                        Where-Object { 
-                            $_.fromcateg -like 'publicIPAddresses'
-                        } | 
-            Select-Object *, @{n = 'Category'; e = { 'fromcateg' } }
+                Where-Object { 
+                    $_.fromcateg -like 'publicIPAddresses'
+                } | 
+                Select-Object *, @{n = 'Category'; e = { 'fromcateg' } }
 
             if ($pubip) {
                 $pubip | ForEach-Object {
                     if ($_.Category -eq 'fromcateg') {
-                        # $ip = (Get-AzResource -name $_.from -ExpandProperties).Properties.ipaddress
                         $from = $_.from
+                        # $ip = (Get-AzResource -name $_.from -ExpandProperties).Properties.ipaddress
                         node "$UniqueIdentifier$from" -Attributes @{
                             Label = "$from";
                             # Label = "$from\n$ip";
-                            shape = "$($Shapes[$($_.fromcateg)])";
-                            style = "$($style[$($_.fromcateg)])" ;
-                            fillcolor = "$($color[$($_.fromcateg)])"
+                            # shape = "$($Shapes[$($_.fromcateg)])";
+                            # style = "$($style[$($_.fromcateg)])" ;
+                            # fillcolor = "$($color[$($_.fromcateg)])"
+                            shape = 'none';
+                            image = "$($Images[$($_.fromcateg)])"
                         }
                     }
                     else {
@@ -164,9 +166,11 @@ Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ;rankdir='TB'} {
                         node "$UniqueIdentifier$to" -Attributes @{
                             Label = "$to";
                             # Label = "$to\n$ip";
-                            shape = "$($Shapes[$($_.tocateg)])";
-                            style = "$($style[$($_.tocateg)])" ;
-                            fillcolor = "$($color[$($_.tocateg)])"
+                            # shape = "$($Shapes[$($_.tocateg)])";
+                            # style = "$($style[$($_.tocateg)])" ;
+                            # fillcolor = "$($color[$($_.tocateg)])"
+                            shape = 'none';
+                            image = "$($Images[$($_.toCateg)])"
                         }
                     }
                 }
@@ -184,8 +188,8 @@ Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ;rankdir='TB'} {
             if ($lb) {
                 $tier++
                 SubGraph "${UniqueIdentifier}loadbalancer" @{
-                    style = 'dashed';
-                    label = "tier-$Tier";
+                    style    = 'dashed';
+                    label    = "tier-$Tier";
                     labelloc = 'tl' 
                 } {
                     $lb | ForEach-Object {
@@ -193,21 +197,25 @@ Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ;rankdir='TB'} {
                             $from = $_.from
                             node "$UniqueIdentifier$from" `
                                 -Attributes @{
-                                    Label = "$from";
-                                    shape = "$($Shapes[$($_.fromcateg)])";
-                                    style = "$($style[$($_.fromcateg)])";
-                                    fillcolor = "$($color[$($_.fromcateg)])"
-                                }
+                                Label = "$from";
+                                # shape = "$($Shapes[$($_.fromcateg)])";
+                                # style = "$($style[$($_.fromcateg)])";
+                                # fillcolor = "$($color[$($_.fromcateg)])"
+                                shape = 'none';
+                                image = "$($Images[$($_.fromcateg)])"
+                            }
                         }
                         else {
                             $to = $_.to
                             node "$UniqueIdentifier$to" `
                                 -Attributes @{
-                                    Label = "$to"; 
-                                    shape = "$($Shapes[$($_.tocateg)])";
-                                    style = "$($style[$($_.tocateg)])" ;
-                                    fillcolor = "$($color[$($_.tocateg)])"
-                                }
+                                # Label = "$to"; 
+                                # shape = "$($Shapes[$($_.tocateg)])";
+                                # style = "$($style[$($_.tocateg)])" ;
+                                # fillcolor = "$($color[$($_.tocateg)])"
+                                shape = 'none';
+                                image = "$($Images[$($_.tocateg)])"
+                            }
                         }
                     }
                 }
@@ -227,11 +235,25 @@ Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ;rankdir='TB'} {
                     $vm | ForEach-Object {
                         if ($_.Category -eq 'fromcateg') {
                             $from = $_.from
-                            node "$UniqueIdentifier$from" -Attributes @{Label = "$from"; shape = "$($Shapes[$($_.fromcateg)])"; style = "$($style[$($_.fromcateg)])" ; fillcolor = "$($color[$($_.fromcateg)])" }
+                            node "$UniqueIdentifier$from" -Attributes @{
+                                Label = "$from"; 
+                                # shape = "$($Shapes[$($_.fromcateg)])"; 
+                                # style = "$($style[$($_.fromcateg)])" ; 
+                                # fillcolor = "$($color[$($_.fromcateg)])"
+                                shape = 'none';
+                                image = "$($Images[$($_.fromcateg)])"
+                            }
                         }
                         else {
                             $to = $_.to
-                            node "$UniqueIdentifier$to" -Attributes @{Label = "$to"; shape = "$($Shapes[$($_.tocateg)])"; style = "$($style[$($_.tocateg)])" ; fillcolor = "$($color[$($_.tocateg)])" }
+                            node "$UniqueIdentifier$to" -Attributes @{
+                                Label = "$to";
+                                # shape = "$($Shapes[$($_.tocateg)])";
+                                # style = "$($style[$($_.tocateg)])" ;
+                                # fillcolor = "$($color[$($_.tocateg)])"
+                                shape = 'none';
+                                image = "$($Images[$($_.tocateg)])"
+                            }
                         }
                     }
                 }
@@ -243,27 +265,44 @@ Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ;rankdir='TB'} {
             $ShouldMatch = 'publicIPAddresses', 'loadBalancers', 'networkInterfaces', 'virtualMachines'
             $remaining += $data | Where-Object { $_.fromcateg -notin $ShouldMatch } |
             Select-Object *, @{n = 'Category'; e = { 'fromcateg' } }
-            $remaining += $data | Where-Object { $_.tocateg -notin $ShouldMatch } |
-            Select-Object *, @{n = 'Category'; e = { 'tocateg' } }
+        $remaining += $data | Where-Object { $_.tocateg -notin $ShouldMatch } |
+        Select-Object *, @{n = 'Category'; e = { 'tocateg' } }
  
-            if ($remaining) {
-                $remaining | ForEach-Object {
-                    if ($_.Category -eq 'fromcateg') {
-                        $from = $_.from
-                        node "$UniqueIdentifier$from" -Attributes @{Label = "$from"; shape = "$($Shapes[$($_.fromcateg)])"; style = "$($style[$($_.fromcateg)])" ; fillcolor = "$($color[$($_.fromcateg)])" }
+    if ($remaining) {
+        $remaining | ForEach-Object {
+            if ($_.Category -eq 'fromcateg') {
+                $from = $_.from
+                node "$UniqueIdentifier$from" -Attributes @{
+                    Label     = "$from"; 
+                    # shape     = "$($Shapes[$($_.fromcateg)])"; 
+                    # style     = "$($style[$($_.fromcateg)])" ; 
+                    # fillcolor = "$($color[$($_.fromcateg)])"
+                    shape = 'none';
+                    image = "$($Images[$($_.fromcateg)])"
+                }
+                Write-Host 'fromcateg ' $_.fromcateg -ForegroundColor Yellow
+            }
+            else {
+                $to = $_.to
+                if (![string]::IsNullOrEmpty($to)) {
+                    node "$UniqueIdentifier$to" -Attributes @{
+                        Label     = "$to"; 
+                        # shape     = "$($Shapes[$($_.tocateg)])"; 
+                        # style     = "$($style[$($_.tocateg)])" ; 
+                        # fillcolor = "$($color[$($_.tocateg)])"
+                        shape = 'none';
+                        image = "$($Images[$($_.tocateg)])"
                     }
-                    else {
-                        $to = $_.to
-                        if (![string]::IsNullOrEmpty($to)) {
-                            node "$UniqueIdentifier$to" -Attributes @{Label = "$to"; shape = "$($Shapes[$($_.tocateg)])"; style = "$($style[$($_.tocateg)])" ; fillcolor = "$($color[$($_.tocateg)])" }
-                        }
-                    }
+                Write-Host 'tocateg ' $_.tocateg -ForegroundColor Yellow
+
                 }
             }
-            #endregion plotting-all-remaining-nodes
-
         }
-        $UniqueIdentifier = $UniqueIdentifier + 1
-    } 
-} | Export-PSGraph
+    }
+    #endregion plotting-all-remaining-nodes
+
+}
+$UniqueIdentifier = $UniqueIdentifier + 1
+} 
+} | Export-PSGraph -ShowGraph
 #endregion graph-generation
