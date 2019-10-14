@@ -9,6 +9,39 @@ Function Get-ImageNode {
         [String]$FillColor = 'White'
     )
 
+    $Shapes = @{
+        loadBalancers                            = 'diamond'
+        publicIPAddresses                        = 'octagon'
+        networkInterfaces                        = 'component'
+        virtualMachines                          = 'box3d'
+        'loadBalancers/backendAddressPools'      = 'rect'
+        'loadBalancers/frontendIPConfigurations' = 'rect'
+        'virtualNetworks'                        = 'oval'
+        'networkSecurityGroups'                  = 'oval'
+    }
+    
+    $Styles = @{
+        loadBalancers                            = 'filled'
+        publicIPAddresses                        = 'filled'
+        networkInterfaces                        = 'filled'
+        virtualMachines                          = 'filled'
+        'loadBalancers/backendAddressPools'      = 'filled'
+        'loadBalancers/frontendIPConfigurations' = 'filled'
+        'virtualNetworks'                        = 'dotted'
+        'networkSecurityGroups'                  = 'filled'
+    }
+    
+    $Colors = @{
+        loadBalancers                            = 'greenyellow'
+        publicIPAddresses                        = 'gold'
+        networkInterfaces                        = 'skyblue'
+        'loadBalancers/frontendIPConfigurations' = 'lightsalmon'
+        virtualMachines                          = 'darkolivegreen3'
+        'loadBalancers/backendAddressPools'      = 'crimson'
+        'virtualNetworks'                        = 'navy'
+        'networkSecurityGroups'                  = 'azure'
+    }
+
     $TR = ''
     $Rows | ForEach-Object {
         $TR += '<TR><TD align="center"><B>{0}</B></TD></TR>' -f $PSItem
@@ -20,10 +53,10 @@ Function Get-ImageNode {
     }
     else {
         node $Name -Attributes @{
-            Label     = $Label; 
-            shape     = $Shape;
-            style     = $style ; 
-            fillcolor = $FillColor
+            Label     = $Rows; 
+            shape     = $Shapes[$Type];
+            style     = $styles[$Type] ; 
+            fillcolor = $Colors[$Type]
         }
     }
 
