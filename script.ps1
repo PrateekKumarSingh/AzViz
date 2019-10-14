@@ -118,7 +118,9 @@ Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ; rankdir = 'TB' } {
                 } | 
                 Sort-Object Rank
             #endregion parsing-topology-and-finding-associations
-            
+          
+            #region test
+
             #region plotting-edges-to-nodes
             $data | 
                 Where-Object to | 
@@ -129,7 +131,7 @@ Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ; rankdir = 'TB' } {
                             -Attributes @{
                             arrowhead = 'box';
                             style     = 'dotted';
-                            label     = 'Contains'
+                            label     = ' Contains'
                         }
                     }
                     else {
@@ -139,6 +141,7 @@ Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ; rankdir = 'TB' } {
                 }
             #endregion plotting-edges-to-nodes
 
+            <#
             #region plotting-all-publicIP-nodes
             $pubip = @()
             $pubip += $data | 
@@ -220,9 +223,11 @@ Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ; rankdir = 'TB' } {
             }
             #endregion plotting-all-VM-nodes
 
+            #endregion test
+#>
             #region plotting-all-remaining-nodes
             $remaining = @()
-            $ShouldMatch = 'publicIPAddresses', 'loadBalancers', 'networkInterfaces', 'virtualMachines'
+            # $ShouldMatch = 'publicIPAddresses', 'loadBalancers', 'networkInterfaces', 'virtualMachines'
             $remaining += $data | Where-Object { $_.fromcateg -notin $ShouldMatch } |
             Select-Object *, @{n = 'Category'; e = { 'fromcateg' } }
         $remaining += $data | Where-Object { $_.tocateg -notin $ShouldMatch } |
@@ -232,35 +237,21 @@ Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ; rankdir = 'TB' } {
         $remaining | ForEach-Object {
             if ($_.Category -eq 'fromcateg') {
                 $from = $_.from
-                # node "$UniqueIdentifier$from" -Attributes @{
-                #     Label     = "$from"; 
-                #     # shape     = "$($Shapes[$($_.fromcateg)])"; 
-                #     # style     = "$($style[$($_.fromcateg)])" ; 
-                #     # fillcolor = "$($color[$($_.fromcateg)])"
-                #     shape = 'none';
-                #     image = "$($Images[$($_.fromcateg)])"
-                # }
-                Get-ImageNode -Name "$UniqueIdentifier$from" -Rows $from -Type $_.fromCateg   
-
-                Write-Host 'fromcateg ' $_.fromcateg -ForegroundColor Yellow
+                $Node = Get-ImageNode -Name "$UniqueIdentifier$from" -Rows $from -Type $_.fromCateg   
+                $Node
+                Write-Host 'fromcateg: ' $_.fromcateg "Name: $From" -ForegroundColor Yellow
+                Write-Host $Node
             }
-            else {
-                $to = $_.to
-                if (![string]::IsNullOrEmpty($to)) {
-                    # node "$UniqueIdentifier$to" -Attributes @{
-                    #     Label     = "$to"; 
-                    #     # shape     = "$($Shapes[$($_.tocateg)])"; 
-                    #     # style     = "$($style[$($_.tocateg)])" ; 
-                    #     # fillcolor = "$($color[$($_.tocateg)])"
-                    #     shape = 'none';
-                    #     image = "$($Images[$($_.tocateg)])"
-                    # }
-                    Get-ImageNode -Name "$UniqueIdentifier$to" -Rows $to -Type $_.toCateg   
+            # else {
+            #     $to = $_.to
+            #     if (![string]::IsNullOrEmpty($to)) {
+            #     $node =   Get-ImageNode -Name "$UniqueIdentifier$to" -Rows $to -Type $_.toCateg   
+            #         $node
+            #         Write-Host 'tocateg: ' $_.tocateg "Name: $To"  -ForegroundColor Yellow
+            #         Write-Host $Node
 
-                Write-Host 'tocateg ' $_.tocateg -ForegroundColor Yellow
-
-                }
-            }
+            #     }
+            # }
         }
     }
     #endregion plotting-all-remaining-nodes
