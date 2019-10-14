@@ -1,6 +1,8 @@
 # Start-Process chrome 'http://armviz.io'
 # Start-Process chrome 'https://github.com/Azure/azure-quickstart-templates/tree/master/101-vm-with-rdp-port'
 
+. D:\Workspace\Repository\AzViz\hashtable.ps1
+
 # using Azure Network watcher to generate resource associations
 # which will be used to build the Azure Network topolgy
 $params = @{
@@ -11,7 +13,7 @@ $params = @{
 $networkWatcher = Get-AzNetworkWatcher @params 
 $ResourceGroups = Get-AzResourceGroup | 
     # Where-Object { $_.ResourceGroupName -in 'DEMO-RESOURCE-GROUP' } |
-    Where-Object { $_.ResourceGroupName -in 'my-resource-group','DEMO-RESOURCE-GROUP', 'test-resource-group', 'DEMO2-RESOURCE-GROUP'  } |
+    Where-Object { $_.ResourceGroupName -in 'DEMO-RESOURCE-GROUP', 'test-resource-group', 'DEMO2-RESOURCE-GROUP' } |
     ForEach-Object ResourceGroupName  
 
 <#
@@ -273,7 +275,7 @@ Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ; rankdir = 'TB' } {
             if ($_.Category -eq 'fromcateg') {
                 $from = $_.from
                 node "$UniqueIdentifier$from" -Attributes @{
-                    Label     = "$from"; 
+                    Label = "$from"; 
                     # shape     = "$($Shapes[$($_.fromcateg)])"; 
                     # style     = "$($style[$($_.fromcateg)])" ; 
                     # fillcolor = "$($color[$($_.fromcateg)])"
@@ -286,14 +288,14 @@ Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ; rankdir = 'TB' } {
                 $to = $_.to
                 if (![string]::IsNullOrEmpty($to)) {
                     node "$UniqueIdentifier$to" -Attributes @{
-                        Label     = "$to"; 
+                        Label = "$to"; 
                         # shape     = "$($Shapes[$($_.tocateg)])"; 
                         # style     = "$($style[$($_.tocateg)])" ; 
                         # fillcolor = "$($color[$($_.tocateg)])"
                         shape = 'none';
                         image = "$($Images[$($_.tocateg)])"
                     }
-                Write-Host 'tocateg ' $_.tocateg -ForegroundColor Yellow
+                    Write-Host 'tocateg ' $_.tocateg -ForegroundColor Yellow
 
                 }
             }
