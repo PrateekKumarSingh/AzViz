@@ -104,7 +104,7 @@ function Get-AzNetworkVizualization {
     Write-Verbose "Target Resource Groups: [$ResourceGroups]"
     Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ; rankdir = 'TB' } {
         foreach ($ResourceGroup in $ResourceGroups) {
-            $location = Get-AzResourceGroup -Name 'test-resource-group' | % location
+            $location = Get-AzResourceGroup -Name $ResourceGroup | % location
             $networkWatcher = Get-AzNetworkWatcher -Location $location
             Write-Verbose "Working on `"Graph$UniqueIdentifier`" for ResourceGroup: `"$ResourceGroup`""
             SubGraph "$($ResourceGroup.Replace('-', ''))" @{label = $ResourceGroup; labelloc = 'b';penwidth="1";fontname="Courier New" } {
