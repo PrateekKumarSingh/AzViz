@@ -23,4 +23,4 @@ $ResourceGroups = 'test-resource-group', 'demo-resource-group'
 Get-AzNetworkVizualization -ResourceGroups $ResourceGroups  -ShowGraph -OutputFormat png -Verbose
 ```
 
-![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/MultipleResourceGroup.jpg)
+![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/MultipleResourceGroups.jpg)
