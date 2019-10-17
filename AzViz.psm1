@@ -15,5 +15,7 @@ if ($missing) {
 }
 
 # Install GraphViz from the Chocolatey repo
-Register-PackageSource -Name Chocolatey -ProviderName Chocolatey -Location http://chocolatey.org/api/v2/ -ErrorAction SilentlyContinue -Verbose
-Find-Package graphviz | Install-Package -ForceBootstrap -Verbose
+if(!(Get-Package GraphViz)){
+    Register-PackageSource -Name Chocolatey -ProviderName Chocolatey -Location http://chocolatey.org/api/v2/ -ErrorAction SilentlyContinue -Verbose
+    Find-Package graphviz | Install-Package -ForceBootstrap -Verbose
+}

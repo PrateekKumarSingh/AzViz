@@ -34,15 +34,15 @@ function Get-AzNetworkVizualization {
     [CmdletBinding()]
     param (
         # Resource Groups 
-        [Parameter(Mandatory)]
         [string[]]
-        $ResourceGroups,
+        $ResourceGroups = (Get-AzResourceGroup).ResourceGroupName,
         # Shows Visualization Graph
         [switch] $ShowGraph,
         # Output format of the image
         [ValidateSet('png','svg')]
         [string]
-        $OutputFormat = 'png'
+        $OutputFormat = 'png',
+        [switch] $DarkMode
     )
 
     if($ShowGraph){
@@ -50,6 +50,26 @@ function Get-AzNetworkVizualization {
     }
     else{
         $ShowGraph= $false
+    }
+
+    if($DarkMode){
+        Write-Verbose "`'Dark mode`' is enabled."
+        $GraphColor = 'Black'
+        $SubGraphColor = 'White'
+        $GraphFontColor = 'White'
+        $EdgeColor = 'White'
+        $EdgeFontColor = 'White'
+        $NodeColor = 'White'
+        $NodeFontColor = 'White'
+    }
+    else{
+        $GraphColor = 'White'
+        $SubGraphColor = 'Black'
+        $GraphFontColor = 'Black'
+        $EdgeColor = 'Black'
+        $EdgeFontColor = 'Black'
+        $NodeColor = 'Black'
+        $NodeFontColor = 'Black'
     }
 
     #region defaults
@@ -102,12 +122,16 @@ function Get-AzNetworkVizualization {
     #region graph-generation
     Write-Verbose "Starting topology graph generation"
     Write-Verbose "Target Resource Groups: [$ResourceGroups]"
-    Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ; rankdir = 'TB' } {
+    Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ; rankdir = 'TB'; color= $GraphColor; bgcolor = $GraphColor; fontcolor = $GraphFontColor } {
+        
+        edge @{color=$EdgeColor;fontcolor=$EdgeFontColor}
+        node @{color=$NodeColor ;fontcolor= $NodeFontColor}
+        
         foreach ($ResourceGroup in $ResourceGroups) {
             $location = Get-AzResourceGroup -Name $ResourceGroup | % location
             $networkWatcher = Get-AzNetworkWatcher -Location $location
             Write-Verbose "Working on `"Graph$UniqueIdentifier`" for ResourceGroup: `"$ResourceGroup`""
-            SubGraph "$($ResourceGroup.Replace('-', ''))" @{label = $ResourceGroup; labelloc = 'b';penwidth="1";fontname="Courier New" } {
+            SubGraph "$($ResourceGroup.Replace('-', ''))" @{label = $ResourceGroup; labelloc = 'b';penwidth="1";fontname="Courier New" ; color= $SubGraphColor} {
                 Write-Verbose "Fetching Network topology of ResourceGroup: `"$ResourceGroup`""
                 $Topology = Get-AzNetworkWatcherTopology -NetworkWatcher $networkWatcher -TargetResourceGroupName $ResourceGroup -Verbose
             
