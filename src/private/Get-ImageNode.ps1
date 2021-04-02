@@ -1,3 +1,5 @@
+<#
+
 $Images = @{
     "BatchAI"                                     = "$PSScriptroot\icons\AI and ML Service Color\BatchAI.png"
     "BotServices"                                 = "$PSScriptroot\icons\AI and ML Service Color\BotServices.png"
@@ -16,7 +18,7 @@ $Images = @{
     "EventHubClusters"                            = "$PSScriptroot\icons\Analytics Service Color\EventHubClusters.png"
     "EventHubs"                                   = "$PSScriptroot\icons\Analytics Service Color\EventHubs.png"
     "HDInsightClusters"                           = "$PSScriptroot\icons\Analytics Service Color\HDInsightClusters.png"
-    "LogAnalyticsWorkspaces"                      = "$PSScriptroot\icons\Analytics Service Color\LogAnalyticsWorkspaces.png"
+    "Workspaces"                                  = "$PSScriptroot\icons\Analytics Service Color\LogAnalyticsWorkspaces.png"
     "StreamAnalyticsJobs"                         = "$PSScriptroot\icons\Analytics Service Color\StreamAnalyticsJobs.png"
     "BatchAccounts"                               = "$PSScriptroot\icons\Compute Service Color\BatchAccounts.png"
     "CitrixVirtualDesktopsEssentials"             = "$PSScriptroot\icons\Compute Service Color\CitrixVirtualDesktopsEssentials.png"
@@ -31,8 +33,8 @@ $Images = @{
     "VMImages"                                    = "$PSScriptroot\icons\Compute Service Color\VMImages.png"
     "AvailabilitySets"                            = "$PSScriptroot\icons\Compute Service Color\VM\AvailabilitySets.png"
     "Non-azure-machine"                           = "$PSScriptroot\icons\Compute Service Color\VM\Non-azure-machine.png"
-    "OSImages"                           = "$PSSCriptRoot\icons\Compute Service Color\VM\OSImages(Classic).png"
-    "VM"                                 = "$PSSCriptRoot\icons\Compute Service Color\VM\VM(Classic).png"
+    "OSImages"                                    = "$PSSCriptRoot\icons\Compute Service Color\VM\OSImages(Classic).png"
+    "VM"                                          = "$PSSCriptRoot\icons\Compute Service Color\VM\VM(Classic).png"
     "VM-Linux-non-azure"                          = "$PSScriptroot\icons\Compute Service Color\VM\VM-Linux-non-azure.png"
     "VM-Linux"                                    = "$PSScriptroot\icons\Compute Service Color\VM\VM-Linux.png"
     "VM-non-azure"                                = "$PSScriptroot\icons\Compute Service Color\VM\VM-non-azure.png"
@@ -190,15 +192,15 @@ $Images = @{
     "LoadBalancers"                               = "$PSScriptroot\icons\Networking Service Color\LoadBalancers.png"
     "LocalNetworkGateways"                        = "$PSScriptroot\icons\Networking Service Color\LocalNetworkGateways.png"
     "NetworkInterfaces"                           = "$PSScriptroot\icons\Networking Service Color\NetworkInterfaces.png"
-    "NetworkSecurityGroups"              = "$PSSCriptRoot\icons\Networking Service Color\NetworkSecurityGroups(Classic).png"
+    "networkSecurityGroups"                       = "$PSSCriptRoot\icons\Networking Service Color\NetworkSecurityGroups(Classic).png"
     "On-premisesDataGateways"                     = "$PSScriptroot\icons\Networking Service Color\On-premisesDataGateways.png"
     "PublicIPAddresses"                           = "$PSScriptroot\icons\Networking Service Color\PublicIPAddresses.png"
-    "ReservedIPAddresses"                = "$PSSCriptRoot\icons\Networking Service Color\ReservedIPAddresses(Classic).png"
+    "ReservedIPAddresses"                         = "$PSSCriptRoot\icons\Networking Service Color\ReservedIPAddresses(Classic).png"
     "RouteFilters"                                = "$PSScriptroot\icons\Networking Service Color\RouteFilters.png"
     "RouteTables"                                 = "$PSScriptroot\icons\Networking Service Color\RouteTables.png"
     "ServiceEndpointPolicies"                     = "$PSScriptroot\icons\Networking Service Color\ServiceEndpointPolicies.png"
     "TrafficManagerProfiles"                      = "$PSScriptroot\icons\Networking Service Color\TrafficManagerProfiles.png"
-    "VirtualNetwork"                     = "$PSSCriptRoot\icons\Networking Service Color\VirtualNetwork(Classic).png"
+    "VirtualNetwork"                              = "$PSSCriptRoot\icons\Networking Service Color\VirtualNetwork(Classic).png"
     "VirtualNetworkGateways"                      = "$PSScriptroot\icons\Networking Service Color\VirtualNetworkGateways.png"
     "VirtualNetworks"                             = "$PSScriptroot\icons\Networking Service Color\VirtualNetworks.png"
     "VirtualWANs"                                 = "$PSScriptroot\icons\Networking Service Color\VirtualWANs.png"
@@ -652,6 +654,151 @@ $Images = @{
     "SystemCenteradminconsole"                    = "$PSScriptroot\icons\_Flat Symbols\CnE_System_Center\SystemCenteradminconsole.png"
 
 }
+#>
+
+$Images = @{
+    "Microsoft.Automation/automationAccounts"                                                    = "automation.png"
+    "Microsoft.Automation/automationAccounts/certificates"                                       = "automation.png"
+    "Microsoft.Automation/automationAccounts/compilationjobs"                                    = "automation.png"
+    "Microsoft.Automation/automationAccounts/configurations"                                     = "automation.png"
+    "Microsoft.Automation/automationAccounts/connectionTypes"                                    = "automation.png"
+    "Microsoft.Automation/automationAccounts/connections"                                        = "automation.png"
+    "Microsoft.Automation/automationAccounts/credentials"                                        = "automation.png"
+    "Microsoft.Automation/automationAccounts/jobSchedules"                                       = "automation.png"
+    "Microsoft.Automation/automationAccounts/jobs"                                               = "automation.png"
+    "Microsoft.Automation/automationAccounts/modules"                                            = "automation.png"
+    "Microsoft.Automation/automationAccounts/nodeConfigurations"                                 = "automation.png"
+    "Microsoft.Automation/automationAccounts/python2Packages"                                    = "automation.png"
+    "Microsoft.Automation/automationAccounts/runbooks"                                           = "automation.png"
+    "Microsoft.Automation/automationAccounts/schedules"                                          = "automation.png"
+    "Microsoft.Automation/automationAccounts/softwareUpdateConfigurations"                       = "automation.png"
+    "Microsoft.Automation/automationAccounts/sourceControls"                                     = "automation.png"
+    "Microsoft.Automation/automationAccounts/sourceControls/sourceControlSyncJobs"               = "automation.png"
+    "Microsoft.Automation/automationAccounts/variables"                                          = "automation.png"
+    "Microsoft.Automation/automationAccounts/watchers"                                           = "automation.png"
+    "Microsoft.Automation/automationAccounts/webhooks"                                           = "automation.png"
+    "Microsoft.Cdn/profiles"                                                                     = "cdnprofiles.png"
+    "Microsoft.Compute/virtualMachines"                                                          = "virtualmachines.png"
+    "Microsoft.Compute/virtualMachineScaleSets"                                                  = "virtualmachinescalesets.png"
+    "Microsoft.Compute/virtualMachines/extensions"                                               = "extensions.png"
+    "Microsoft.ContainerInstance/containerGroups"                                                = "containerinstances.png"
+    "Microsoft.DocumentDB/databaseAccounts"                                                      = "cosmosdb.png"
+    "Microsoft.DocumentDB/databaseAccounts/apis/databases"                                       = "cosmosdb.png"
+    "Microsoft.DocumentDB/databaseAccounts/apis/databases/collections"                           = "cosmosdb.png"
+    "Microsoft.DocumentDB/databaseAccounts/apis/databases/containers"                            = "cosmosdb.png"
+    "Microsoft.DocumentDB/databaseAccounts/apis/databases/graphs"                                = "cosmosdb.png"
+    "Microsoft.DocumentDB/databaseAccounts/apis/keyspaces"                                       = "cosmosdb.png"
+    "Microsoft.DocumentDB/databaseAccounts/apis/tables"                                          = "cosmosdb.png"
+    "Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces"                                   = "cosmosdb.png"
+    "Microsoft.DocumentDB/databaseAccounts/gremlinDatabases"                                     = "cosmosdb.png"
+    "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections"                         = "cosmosdb.png"
+    "Microsoft.DocumentDB/databaseAccounts/sqlDatabases"                                         = "cosmosdb.png"
+    "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers"                              = "cosmosdb.png"
+    "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/storedProcedures"             = "cosmosdb.png"
+    "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/triggers"                     = "cosmosdb.png"
+    "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/userDefinedFunctions"         = "cosmosdb.png"
+    "Microsoft.DocumentDB/databaseAccounts/tables"                                               = "cosmosdb.png"
+    "Microsoft.Insights/QueryPacks/queries"                                                      = "applicationinsights.png"
+    "Microsoft.Insights/actionGroups"                                                            = "applicationinsights.png"
+    "Microsoft.Insights/activityLogAlerts"                                                       = "applicationinsights.png"
+    "Microsoft.Insights/alertrules"                                                              = "applicationinsights.png"
+    "Microsoft.Insights/autoscalesettings"                                                       = "applicationinsights.png"
+    "Microsoft.Insights/components"                                                              = "applicationinsights.png"
+    "Microsoft.Insights/components/ProactiveDetectionConfigs"                                    = "applicationinsights.png"
+    "Microsoft.Insights/diagnosticSettings"                                                      = "applicationinsights.png"
+    "Microsoft.Insights/guestDiagnosticSettings"                                                 = "applicationinsights.png"
+    "Microsoft.Insights/guestDiagnosticSettingsAssociation"                                      = "applicationinsights.png"
+    "Microsoft.Insights/logprofiles"                                                             = "applicationinsights.png"
+    "Microsoft.Insights/metricAlerts"                                                            = "applicationinsights.png"
+    "Microsoft.Insights/queryPacks"                                                              = "applicationinsights.png"
+    "Microsoft.Insights/scheduledQueryRules"                                                     = "applicationinsights.png"
+    "Microsoft.Insights/webtests"                                                                = "applicationinsights.png"
+    "Microsoft.Insights/workbooks"                                                               = "applicationinsights.png"
+    "Microsoft.KeyVault/vaults"                                                                  = "keyvaults.png"
+    "Microsoft.KeyVault/vaults/secrets"                                                          = "keyvaults.png"
+    "Microsoft.Media/mediaServices"                                                              = "mediaservices.png"
+    "Microsoft.Network/azureFirewalls"                                                           = "firewall.png"
+    "Microsoft.Network/loadBalancers"                                                            = "loadbalancers.png"
+    "Microsoft.Network/networkInterfaces"                                                        = "nic.png"
+    "Microsoft.Network/networkSecurityGroups"                                                    = "nsg.png"
+    "Microsoft.Network/networkSecurityGroups/securityRules"                                      = "nsg.png"
+    "Microsoft.Network/publicIPAddresses"                                                        = "publicip.png"
+    "Microsoft.Network/publicIPPrefixes"                                                         = "publicip.png"
+    "Microsoft.Network/routeTables/routes"                                                       = "routetables.png"
+    "Microsoft.Network/trafficManagerProfiles"                                                   = "trafficmanagerprofiles.png"
+    "Microsoft.Network/virtualNetworkGateways"                                                   = "virtualnetworkgateways.png"
+    "Microsoft.Network/virtualNetworks"                                                          = "virtualnetworks.png"
+    "Microsoft.ServiceFabric/clusters"                                                           = "servicefabric.png"
+    "Microsoft.Sql/instancePools"                                                                = "sqlservers.png"
+    "Microsoft.Sql/locations/instanceFailoverGroups"                                             = "sqlservers.png"
+    "Microsoft.Sql/managedInstances"                                                             = "sqlservers.png"
+    "Microsoft.Sql/managedInstances/administrators"                                              = "sqlservers.png"
+    "Microsoft.Sql/managedInstances/databases"                                                   = "sqlservers.png"
+    "Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies"                  = "sqlservers.png"
+    "Microsoft.Sql/managedInstances/databases/schemas/tables/columns/sensitivityLabels"          = "sqlservers.png"
+    "Microsoft.Sql/managedInstances/databases/securityAlertPolicies"                             = "sqlservers.png"
+    "Microsoft.Sql/managedInstances/databases/vulnerabilityAssessments"                          = "sqlservers.png"
+    "Microsoft.Sql/managedInstances/databases/vulnerabilityAssessments/rules/baselines"          = "sqlservers.png"
+    "Microsoft.Sql/managedInstances/encryptionProtector"                                         = "sqlservers.png"
+    "Microsoft.Sql/managedInstances/keys"                                                        = "sqlservers.png"
+    "Microsoft.Sql/managedInstances/restorableDroppedDatabases/backupShortTermRetentionPolicies" = "sqlservers.png"
+    "Microsoft.Sql/managedInstances/securityAlertPolicies"                                       = "sqlservers.png"
+    "Microsoft.Sql/managedInstances/vulnerabilityAssessments"                                    = "sqlservers.png"
+    "Microsoft.Sql/servers"                                                                      = "sqlservers.png"
+    "Microsoft.Sql/servers/administrators"                                                       = "sqlservers.png"
+    "Microsoft.Sql/servers/auditingSettings"                                                     = "sqlservers.png"
+    "Microsoft.Sql/servers/backupLongTermRetentionVaults"                                        = "sqlservers.png"
+    "Microsoft.Sql/servers/communicationLinks"                                                   = "sqlservers.png"
+    "Microsoft.Sql/servers/connectionPolicies"                                                   = "sqlservers.png"
+    "Microsoft.Sql/servers/databases"                                                            = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/auditingSettings"                                           = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies"                            = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies"                           = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/connectionPolicies"                                         = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/dataMaskingPolicies"                                        = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/dataMaskingPolicies/rules"                                  = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/extendedAuditingSettings"                                   = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/extensions"                                                 = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/geoBackupPolicies"                                          = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/schemas/tables/columns/sensitivityLabels"                   = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/securityAlertPolicies"                                     = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/syncGroups"                                                 = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/syncGroups/syncMembers"                                     = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/transparentDataEncryption"                                  = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/vulnerabilityAssessments"                                   = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/vulnerabilityAssessments/rules/baselines"                   = "sqlservers.png"
+    "Microsoft.Sql/servers/disasterRecoveryConfiguration"                                        = "sqlservers.png"
+    "Microsoft.Sql/servers/dnsAliases"                                                           = "sqlservers.png"
+    "Microsoft.Sql/servers/elasticPools"                                                         = "sqlservers.png"
+    "Microsoft.Sql/servers/encryptionProtector"                                                  = "sqlservers.png"
+    "Microsoft.Sql/servers/extendedAuditingSettings"                                             = "sqlservers.png"
+    "Microsoft.Sql/servers/failoverGroups"                                                       = "sqlservers.png"
+    "Microsoft.Sql/servers/firewallRules"                                                        = "sqlservers.png"
+    "Microsoft.Sql/servers/jobAgents"                                                            = "sqlservers.png"
+    "Microsoft.Sql/servers/jobAgents/credentials"                                                = "sqlservers.png"
+    "Microsoft.Sql/servers/jobAgents/jobs"                                                       = "sqlservers.png"
+    "Microsoft.Sql/servers/jobAgents/jobs/executions"                                            = "sqlservers.png"
+    "Microsoft.Sql/servers/jobAgents/jobs/steps"                                                 = "sqlservers.png"
+    "Microsoft.Sql/servers/jobAgents/targetGroups"                                               = "sqlservers.png"
+    "Microsoft.Sql/servers/keys"                                                                 = "sqlservers.png"
+    "Microsoft.Sql/servers/privateEndpointConnections"                                           = "sqlservers.png"
+    "Microsoft.Sql/servers/securityAlertPolicies"                                                = "sqlservers.png"
+    "Microsoft.Sql/servers/syncAgents"                                                           = "sqlservers.png"
+    "Microsoft.Sql/servers/virtualNetworkRules"                                                  = "sqlservers.png"
+    "Microsoft.Sql/servers/vulnerabilityAssessments"                                             = "sqlservers.png"
+    "Microsoft.Storage/storageAccounts"                                                          = "storageaccounts.png"
+    "Microsoft.Web/sites"                                                                        = "appservices.png"
+    "config"                                                                                     = "appconfiguration.png"
+    "resources"                                                                                  = "resources.png"
+}
+
+# $files = Get-Childitem "c:\Users\prasingh\AzViz\src\private\Icons_old\" -Recurse -Filter *.png
+# $Images = @{}
+# foreach ($f in $files) { 
+#     $value = $f.fullname
+#     $key = (Split-Path $value -Leaf).replace(".png", "")
+#     $Images.Add($key,$value)
+# }
 
 Function Get-ImageNode {
     param(
@@ -698,26 +845,34 @@ Function Get-ImageNode {
     }
 
     $TR = ''
-    $Rows | ForEach-Object {
-        $TR += '<TR><TD align="center"><B>{0}</B></TD></TR>' -f $PSItem
+    $flag = $true
+    foreach($r in $Rows){
+        if ($flag) {
+            $TR += '<TR><TD align="center"><B>{0}</B></TD></TR>' -f $r
+            $flag = $false
+        }
+        else{
+            $TR += '<TR><TD align="center">{0}</TD></TR>' -f $r
+        }
     }
 
     $Path = $images[$Type]
     if ($Path) {
-        '"{0}" [label=<<TABLE border="0" cellborder="0" cellpadding="0"><TR><TD ALIGN="center" ><img src="{1}"/></TD></TR>{2}</TABLE>>;fillcolor="white";shape="none";penwidth="1";fontname="Courier New";]' -f $Name, $images[$Type], $TR
+        '"{0}" [label=<<TABLE border="0" cellborder="0" cellpadding="0"><TR><TD ALIGN="center" ><img src="{1}"/></TD></TR>{2}</TABLE>>;fillcolor="white";shape="none";penwidth="1";fontname="Courier New";]' -f $Name, "$PSScriptRoot\icons\$($images[$Type])", $TR
     }
     else {
-        node $Name -Attributes @{
-            Label     = $Rows; 
-            shape     = $Shapes[$Type];
-            style     = $styles[$Type] ; 
-            fillcolor = $Colors[$Type];
-            penwidth="1";
-            fontname="Courier New"
-        }
+        '"{0}" [label=<<TABLE border="0" cellborder="0" cellpadding="0"><TR><TD ALIGN="center" ><img src="{1}"/></TD></TR>{2}</TABLE>>;fillcolor="white";shape="none";penwidth="1";fontname="Courier New";]' -f $Name, "$PSScriptRoot\icons\$($images["resources"])", $TR
+        # node $Name -Attributes @{
+        #     Label     = $Rows; 
+        #     shape     = $Shapes[$Type];
+        #     style     = $styles[$Type] ; 
+        #     fillcolor = $Colors[$Type];
+        #     penwidth  = "1";
+        #     fontname  = "Courier New"
+        # }
     }
 
 }
 
 
-# Get-ImageNode -Name 'test' -Rows 'testnode','192.168.1.1' -Type LoadBalancers
+# Get-ImageNode -Name 'test' -Rows 'testnode','192.168.1.1' -Type "Microsoft.Compute/virtualMachines"

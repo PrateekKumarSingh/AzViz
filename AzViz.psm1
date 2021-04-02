@@ -14,6 +14,8 @@ if ($missing) {
     Import-Module $missing
 }
 
+Import-Module C:\Users\prasingh\Downloads\psarm.0.1.0-alpha1\PSArm.psd1
+
 # Install GraphViz from the Chocolatey repo
 if(!(Get-Package GraphViz)){
     Register-PackageSource -Name Chocolatey -ProviderName Chocolatey -Location http://chocolatey.org/api/v2/ -ErrorAction SilentlyContinue -Verbose

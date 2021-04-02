@@ -10,7 +10,7 @@ PowerShell Module that can generate a topology diagram to Visualize Azure Networ
 ```PowerShell
 Import-Module AzViz
 
-Get-AzNetworkVizualization -ResourceGroups 'test-resource-group' -ShowGraph -OutputFormat png -Verbose
+Get-AzViz -ResourceGroups 'test-resource-group' -ShowGraph -OutputFormat png -Verbose
 ```
 
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/SingleResourceGroup.jpg)
@@ -20,7 +20,7 @@ Get-AzNetworkVizualization -ResourceGroups 'test-resource-group' -ShowGraph -Out
 
 ```PowerShell
 $ResourceGroups = 'test-resource-group', 'demo-resource-group'
-Get-AzNetworkVizualization -ResourceGroups $ResourceGroups  -ShowGraph -OutputFormat png -Verbose
+Get-AzViz -ResourceGroups $ResourceGroups  -ShowGraph -OutputFormat png -Verbose
 ```
 
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/MultipleResourceGroups.jpg)
