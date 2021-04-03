@@ -38,13 +38,17 @@ function Get-AzViz {
         $ResourceGroups = (Get-AzResourceGroup).ResourceGroupName,
         # Shows Visualization Graph
         [switch] $ShowGraph,
-        # Include category information
-        [switch] $IncludeCategory,
+        # Level of information to included in vizualization
+        [ValidateSet('level1', 'level2', 'level3')]
+        [string] $Information = 'level1',
         # Output format of the image
         [ValidateSet('png', 'svg')]
         [string]
         $OutputFormat = 'png',
-        [switch] $DarkMode
+        [switch] $DarkMode,
+        # Level of Azure Resource Sub-category to be included in vizualization
+        [ValidateSet('level1', 'level2', 'level3')]
+        [string] $Depth = 'level1'
     )
         
     #region defaults
@@ -77,15 +81,19 @@ function Get-AzViz {
     }
 
     $rank = @{
-        publicIPAddresses     = 0
-        loadBalancers         = 1
-        virtualNetworks       = 2 
-        networkSecurityGroups = 3
-        networkInterfaces     = 4
-        virtualMachines       = 5
+        "Microsoft.Network/publicIPAddresses"     = 1
+        "Microsoft.Network/loadBalancers"         = 2
+        "Microsoft.Network/virtualNetworks"       = 3 
+        "Microsoft.Network/networkSecurityGroups" = 4
+        "Microsoft.Network/networkInterfaces"     = 5
+        "Microsoft.Compute/virtualMachines"       = 6
     }
 
-    $UniqueIdentifier = 0
+    switch ($Depth) {
+        'level1' { $depthlevel = 2 }
+        'level2' { $depthlevel = 3 }
+        'level3' { $depthlevel = 4 }
+    }
 
     #endregion defaults
 
@@ -97,151 +105,123 @@ function Get-AzViz {
         edge @{color = $EdgeColor; fontcolor = $EdgeFontColor }
         node @{color = $NodeColor ; fontcolor = $NodeFontColor }
         
-        foreach ($ResourceGroup in $ResourceGroups) {
+        if (Test-AzLogin) {
+            foreach ($ResourceGroup in $ResourceGroups) {
+            
+                if (Get-AzResource -ResourceGroupName $ResourceGroup) {
 
-            if (Get-AzResource -ResourceGroupName $ResourceGroup) {
+                    Write-Verbose "Plotting graph for resource group: `"$ResourceGroup`""
 
-                Write-Verbose "Plotting graph for resource group: `"$ResourceGroup`""
-
-                SubGraph "$($ResourceGroup.Replace('-', ''))" @{label = $ResourceGroup; labelloc = 'b'; penwidth = "1"; fontname = "Courier New" ; color = $SubGraphColor } {
+                    SubGraph "$($ResourceGroup.Replace('-', ''))" @{label = $ResourceGroup; labelloc = 'b'; penwidth = "1"; fontname = "Courier New" ; color = $SubGraphColor; } {
                     
-                    #region parsing-arm-template-and-finding-resource-dependencies
-                    $data = @()
-                    $template = Export-AzResourceGroup -ResourceGroupName $ResourceGroup -SkipAllParameterization -Force -Path $env:TEMP\template.json
-                    $arm = ConvertFrom-ArmTemplate -Path $template.Path
-                    # $excluded_types = @("scheduledqueryrules","containers","solutions","modules","savedSearches")
+                        #region parsing-arm-template-and-finding-resource-dependencies
+                        $data = @()
+
+                        $template = Export-AzResourceGroup -ResourceGroupName $ResourceGroup -SkipAllParameterization -Force -Path $env:TEMP\template.json
+                        $arm = ConvertFrom-ArmTemplate -Path $template.Path
+                        # $excluded_types = @("scheduledqueryrules","containers","solutions","modules","savedSearches")
                     
-                    $data += $arm.Resources | ForEach-Object {
-                        $dependson = $null
-                        if($_.dependson){
-                            $dependson = $_.DependsOn #| ForEach-Object { $_.ToString().split("parameters('")[1].split("')")[0]}
-                            foreach ($dependency in $dependson) {                            
-                                [PSCustomObject]@{
-                                    fromcateg = $_.type.ToString() #.split('/')[-1]
-                                    from = $_.name.ToString() #.split('/')[-1] #.split("parameters('")[1].split("')")[0]
-                                    to = $dependency.tostring().replace("[resourceId(","").replace(")]","").Split(",")[1].replace("'","").trim() #.split('/')[-1]
-                                    tocateg = $dependency.tostring().replace("[resourceId(","").replace(")]","").Split(",")[0].replace("'","").trim() #.split('/')[-1]
-                                    association = 'associated'
-                                    rank = $rank["$($_.type.ToString().split('/')[1])"]
-                                }
-                            }
-                        }
-                        else{
-                            [PSCustomObject]@{
-                                fromcateg = $_.type.ToString() #.split('/')[-1]
-                                from = $_.name.ToString() #.split("parameters('")[1].split("')")[0]
-                                to = ''
-                                tocateg = ''
-                                association = ''
-                                rank = $rank["$($_.type.ToString().split('/')[1])"]
-                            }
-                        }
-                    }
-
-                    # $location = Get-AzResourceGroup -Name $ResourceGroup | % location
-                    # $networkWatcher = Get-AzNetworkWatcher -Location $location
-                    # $Topology = Get-AzNetworkWatcherTopology -NetworkWatcher $networkWatcher -TargetResourceGroupName $ResourceGroup -Verbose
-                    # Write-Verbose "Parsing network topology objects to find associations"
-                    # $data += $Topology.Resources | 
-                    #     Select-Object @{n = 'from'; e = { $_.name } }, 
-                    #     @{n = 'FromCategory'; e = { $_.id.Split('/', 8)[-1] } },
-                    #     Associations, 
-                    #     @{n = 'To'; e = { ($_.AssociationText | ConvertFrom-Json) | Select-Object name, AssociationType, resourceID } } |
-                    #     ForEach-Object {
-                    #         if ($_.to) {
-                    #             Foreach ($to in $_.to) {
-                    #                 $i = 1
-                    #                 $fromcateg = $_.FromCategory.split('/', 4).ForEach( { if ($i % 2) { $_ }; $i = $i + 1 }) -join '/'
-                    #                 [PSCustomObject]@{
-                    #                     fromcateg   = $fromCateg
-                    #                     from        = $_.from
-                    #                     to          = $to.name
-                    #                     association = $to.associationType
-                    #                     toCateg     = (($to.resourceID -split 'providers/')[1] -split '/')[1]
-                    #                     rank        = $rank["$($FromCateg.split('/')[0])"]
-                    #                 }
-                    #             }
-                    #         }
-                    #         else {
-                    #             $i = 1
-                    #             $fromcateg = $_.FromCategory.split('/', 4).ForEach( { if ($i % 2) { $_ }; $i = $i + 1 }) -join '/'
-                    #             [PSCustomObject]@{
-                    #                 fromcateg   = $fromCateg
-                    #                 from        = $_.from
-                    #                 to          = ''
-                    #                 association = ''
-                    #                 toCateg     = ''
-                    #                 rank        = $rank["$($FromCateg.split('/')[0])"]
-                    #             }
-                    #         }
-                    #     } | 
-                    #     Sort-Object Rank
-
-                    $data = $data | Sort-Object Rank
-                    #endregion parsing-arm-template-and-finding-resource-associations
-               
-                    #region plotting-edges-to-nodes
-                    $data | 
-                    Where-Object to | 
-                    ForEach-Object {
-                        if ($_.Association -eq 'Associated') {
-                            Edge -From "$UniqueIdentifier$($_.from)" `
-                            -to "$UniqueIdentifier$($_.to)" `
-                            -Attributes @{
-                                arrowhead = 'box';
-                                style     = 'dotted';
-                                    label     = ' DependsOn'
-                                    penwidth  = "1"
-                                    fontname  = "Courier New"
+                        $data += $arm.Resources |
+                        Where-Object { $_.type.tostring().split("/").count -le $depthlevel } |
+                        ForEach-Object {
+                            $dependson = $null
+                            if ($_.dependson) {
+                                $dependson = $_.DependsOn #| ForEach-Object { $_.ToString().split("parameters('")[1].split("')")[0]}
+                                foreach ($dependency in $dependson) {                            
+                                    $r = $rank["$($_.type.ToString())"]
+                                    [PSCustomObject]@{
+                                        fromcateg   = $_.type.ToString() #.split('/')[-1]
+                                        from        = $_.name.ToString() #.split('/')[-1] #.split("parameters('")[1].split("')")[0]
+                                        to          = $dependency.tostring().replace("[resourceId(", "").replace(")]", "").Split(",")[1].replace("'", "").trim() # -join '/' #.split('/')[-1]
+                                        tocateg     = $dependency.tostring().replace("[resourceId(", "").replace(")]", "").Split(",")[0].replace("'", "").trim().Split("/")[0..1] -join '/' #.split('/')[-1]
+                                        isdependent = $true
+                                        rank        = if ($r) { $r }else { 9999 }
+                                    }
                                 }
                             }
                             else {
-                                Edge -From "$UniqueIdentifier$($_.from)" `
-                                    -to "$UniqueIdentifier$($_.to)" -Attributes @{
-                                        penwidth = "1"
-                                        fontname = "Courier New"
-                                    }
+                                $r = $rank["$($_.type.ToString())"]
+                                [PSCustomObject]@{
+                                    fromcateg   = $_.type.ToString() #.split('/')[-1]
+                                    from        = $_.name.ToString() #.split("parameters('")[1].split("')")[0]
+                                    to          = ''
+                                    tocateg     = ''
+                                    isdependent = $false
+                                    rank        = if ($r) { $r }else { 9999 }
                                 }
-                    }
-                    #endregion plotting-edges-to-nodes
-                            
-         
-                            #region plotting-all-remaining-nodes
-                            $remaining = $data
-                    # # $remaining = @()
-                    # # $ShouldMatch = 'publicIPAddresses', 'loadBalancers', 'networkInterfaces', 'virtualMachines'
-                    # $remaining += $data | Where-Object { $_.fromcateg -notin $ShouldMatch } | Select-Object *, @{n = 'Category'; e = { 'fromcateg' } }
-                    # $remaining += $data | Where-Object { $_.tocateg -notin $ShouldMatch } | Select-Object *, @{n = 'Category'; e = { 'tocateg' } }
- 
-                    if ($remaining) {
-                        $remaining | ForEach-Object {
-                            # if ($_.Category -eq 'fromcateg') {
-                                $from = $_.from
-                                if($IncludeCategory){
-                                    Get-ImageNode -Name "$UniqueIdentifier$from" -Rows ($from,$_.fromCateg) -Type $_.fromCateg   
+                            }
+                        } | 
+                        Sort-Object Rank
+                        #endregion parsing-arm-template-and-finding-resource-associations
+
+                        #region plotting-edges-to-nodes
+
+                        $data | 
+                        Where-Object to | 
+                        ForEach-Object {
+                            $from = $_.from
+                            $fromcateg = $_.fromcateg
+                            $to = $_.to
+                            $tocateg = $_.tocateg
+                            if ($_.isdependent) {
+                                Edge -From "$fromcateg$from".ToUpper() `
+                                    -to "$tocateg$to".ToUpper() `
+                                    -Attributes @{
+                                    arrowhead = 'none';
+                                    style     = 'dashed';
+                                    label     = ''
+                                    penwidth  = "1"
+                                    fontname  = "Courier New"
                                 }
-                                else {
-                                    Get-ImageNode -Name "$UniqueIdentifier$from" -Rows $from -Type $_.fromCateg   
+
+                                if ($Information -eq 'level1') {
+                                    Get-ImageNode -Name "$fromcateg$from".ToUpper() -Rows $from -Type $fromcateg   
+                                    Get-ImageNode -Name "$tocateg$to".ToUpper() -Rows $to -Type $tocateg   
                                 }
-                            # }
+                                elseif ($Information -eq 'level2') {
+                                    Get-ImageNode -Name "$fromcateg$from".ToUpper() -Rows ($from, $fromcateg) -Type $fromcateg
+                                    Get-ImageNode -Name "$tocateg$to".ToUpper() -Rows ($to, $toCateg) -Type $tocateg   
+                                }
+                            }
+                            else {
+                                if ($Information -eq 'level1') {
+                                    Get-ImageNode -Name "$fromcateg$from".ToUpper() -Rows $from -Type $fromcateg   
+                                }
+                                elseif ($Information -eq 'level2') {
+                                    Get-ImageNode -Name "$fromcateg$from".ToUpper() -Rows ($from, $fromcateg) -Type $fromcateg
+                                }
+                            }
                         }
-                        $UniqueIdentifier = $UniqueIdentifier + 1
+                        #endregion plotting-edges-to-nodes
+
+                        # foreach($item in $data | Group-Object rank){
+                        #     $nodes = foreach($group in $item.Group){
+                        #         $from = $group.from
+                        #         $fromcateg = $group.fromcateg
+                        #         $to = $group.to
+                        #         $tocateg = $group.tocateg
+                        #         "`"$fromcateg$from`"".ToUpper()
+                        #     }
+                            
+                        #     "{rank = `"same`"; $($nodes -join '; ')}"
+                        # }
                     }
                     #endregion plotting-all-remaining-nodes
-
+            
+                }
+                else {
+                    Write-Verbose "Skipping resource group: `"$ResourceGroup`" as no resources were found."             
                 }
             }
-            else {
-                Write-Verbose "Skipping resource group: `"$ResourceGroup`" as no resources were found."             
-            }
-
         } 
     }
     
-    $graph | Export-PSGraph -ShowGraph:$ShowGraph -OutputFormat $OutputFormat -DestinationPath C:\temp\out.png -OutVariable output
+    @"
+strict $graph
+"@ | Export-PSGraph -ShowGraph:$ShowGraph -OutputFormat $OutputFormat -DestinationPath C:\temp\out.png -OutVariable output
     #endregion graph-generation
 
     Write-Verbose "Graph Exported to path: $($output.fullname)"
 }
 
-Export-ModuleMember Get-AzViz -Alias AzViz
+Export-ModuleMember Get-AzViz

@@ -681,6 +681,9 @@ $Images = @{
     "Microsoft.Compute/virtualMachines"                                                          = "virtualmachines.png"
     "Microsoft.Compute/virtualMachineScaleSets"                                                  = "virtualmachinescalesets.png"
     "Microsoft.Compute/virtualMachines/extensions"                                               = "extensions.png"
+    "Microsoft.Compute/availabilitySets"                                                         = "AvailabilitySets.png"
+    "Microsoft.Compute/disks"                                                                    = "Disks.png"
+    "Microsoft.Compute/snapshots"                                                                = "DiskSnapshots.png"
     "Microsoft.ContainerInstance/containerGroups"                                                = "containerinstances.png"
     "Microsoft.DocumentDB/databaseAccounts"                                                      = "cosmosdb.png"
     "Microsoft.DocumentDB/databaseAccounts/apis/databases"                                       = "cosmosdb.png"
@@ -698,24 +701,73 @@ $Images = @{
     "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/triggers"                     = "cosmosdb.png"
     "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/userDefinedFunctions"         = "cosmosdb.png"
     "Microsoft.DocumentDB/databaseAccounts/tables"                                               = "cosmosdb.png"
-    "Microsoft.Insights/QueryPacks/queries"                                                      = "applicationinsights.png"
-    "Microsoft.Insights/actionGroups"                                                            = "applicationinsights.png"
-    "Microsoft.Insights/activityLogAlerts"                                                       = "applicationinsights.png"
-    "Microsoft.Insights/alertrules"                                                              = "applicationinsights.png"
-    "Microsoft.Insights/autoscalesettings"                                                       = "applicationinsights.png"
-    "Microsoft.Insights/components"                                                              = "applicationinsights.png"
-    "Microsoft.Insights/components/ProactiveDetectionConfigs"                                    = "applicationinsights.png"
-    "Microsoft.Insights/diagnosticSettings"                                                      = "applicationinsights.png"
-    "Microsoft.Insights/guestDiagnosticSettings"                                                 = "applicationinsights.png"
-    "Microsoft.Insights/guestDiagnosticSettingsAssociation"                                      = "applicationinsights.png"
-    "Microsoft.Insights/logprofiles"                                                             = "applicationinsights.png"
-    "Microsoft.Insights/metricAlerts"                                                            = "applicationinsights.png"
-    "Microsoft.Insights/queryPacks"                                                              = "applicationinsights.png"
-    "Microsoft.Insights/scheduledQueryRules"                                                     = "applicationinsights.png"
-    "Microsoft.Insights/webtests"                                                                = "applicationinsights.png"
-    "Microsoft.Insights/workbooks"                                                               = "applicationinsights.png"
+    "microsoft.insights/components"                                                              = "applicationinsights.png"
+    "microsoft.insights/components/query"                                                        = "applicationinsights.png"
+    "microsoft.insights/components/metadata"                                                     = "applicationinsights.png"
+    "microsoft.insights/components/metrics"                                                      = "applicationinsights.png"
+    "microsoft.insights/components/events"                                                       = "applicationinsights.png"
+    "microsoft.insights/webtests"                                                                = "applicationinsights.png"
+    "microsoft.insights/webtests/getTestResultFile"                                              = "applicationinsights.png"
+    "microsoft.insights/scheduledqueryrules"                                                     = "applicationinsights.png"
+    "microsoft.insights/components/pricingPlans"                                                 = "applicationinsights.png"
+    "microsoft.insights/migrateToNewPricingModel"                                                = "applicationinsights.png"
+    "microsoft.insights/rollbackToLegacyPricingModel"                                            = "applicationinsights.png"
+    "microsoft.insights/listMigrationdate"                                                       = "applicationinsights.png"
+    "microsoft.insights/logprofiles"                                                             = "applicationinsights.png"
+    "microsoft.insights/migratealertrules"                                                       = "applicationinsights.png"
+    "microsoft.insights/metricalerts"                                                            = "applicationinsights.png"
+    "microsoft.insights/alertrules"                                                              = "applicationinsights.png"
+    "microsoft.insights/autoscalesettings"                                                       = "applicationinsights.png"
+    "microsoft.insights/eventtypes"                                                              = "applicationinsights.png"
+    "microsoft.insights/locations"                                                               = "applicationinsights.png"
+    "microsoft.insights/locations/operationResults"                                              = "applicationinsights.png"
+    "microsoft.insights/vmInsightsOnboardingStatuses"                                            = "applicationinsights.png"
+    "microsoft.insights/operations"                                                              = "applicationinsights.png"
+    "microsoft.insights/diagnosticSettings"                                                      = "applicationinsights.png"
+    "microsoft.insights/diagnosticSettingsCategories"                                            = "applicationinsights.png"
+    "microsoft.insights/extendedDiagnosticSettings"                                              = "applicationinsights.png"
+    "microsoft.insights/metricDefinitions"                                                       = "applicationinsights.png"
+    "microsoft.insights/logDefinitions"                                                          = "applicationinsights.png"
+    "microsoft.insights/eventCategories"                                                         = "applicationinsights.png"
+    "microsoft.insights/metrics"                                                                 = "applicationinsights.png"
+    "microsoft.insights/metricbatch"                                                             = "applicationinsights.png"
+    "microsoft.insights/metricNamespaces"                                                        = "applicationinsights.png"
+    "microsoft.insights/actiongroups"                                                            = "applicationinsights.png"
+    "microsoft.insights/activityLogAlerts"                                                       = "applicationinsights.png"
+    "microsoft.insights/baseline"                                                                = "applicationinsights.png"
+    "microsoft.insights/metricbaselines"                                                         = "applicationinsights.png"
+    "microsoft.insights/calculatebaseline"                                                       = "applicationinsights.png"
+    "microsoft.insights/workbooks"                                                               = "applicationinsights.png"
+    "microsoft.insights/workbooktemplates"                                                       = "applicationinsights.png"
+    "microsoft.insights/myWorkbooks"                                                             = "applicationinsights.png"
+    "microsoft.insights/logs"                                                                    = "applicationinsights.png"
+    "microsoft.insights/transactions"                                                            = "applicationinsights.png"
+    "microsoft.insights/topology"                                                                = "applicationinsights.png"
+    "microsoft.insights/generateLiveToken"                                                       = "applicationinsights.png"
+    "microsoft.insights/dataCollectionRules"                                                     = "applicationinsights.png"
+    "microsoft.insights/dataCollectionRuleAssociations"                                          = "applicationinsights.png"
+    "microsoft.insights/privateLinkScopes"                                                       = "applicationinsights.png"
+    "microsoft.insights/privateLinkScopes/privateEndpointConnections"                            = "applicationinsights.png"
+    "microsoft.insights/privateLinkScopes/privateEndpointConnectionProxies"                      = "applicationinsights.png"
+    "microsoft.insights/privateLinkScopes/scopedResources"                                       = "applicationinsights.png"
+    "microsoft.insights/components/linkedstorageaccounts"                                        = "applicationinsights.png"
+    "microsoft.insights/privateLinkScopeOperationStatuses"                                       = "applicationinsights.png"
     "Microsoft.KeyVault/vaults"                                                                  = "keyvaults.png"
     "Microsoft.KeyVault/vaults/secrets"                                                          = "keyvaults.png"
+    "Microsoft.KeyVault/vaults/accessPolicies"                                                   = "keyvaults.png"
+    "Microsoft.KeyVault/operations"                                                              = "keyvaults.png"
+    "Microsoft.KeyVault/checkNameAvailability"                                                   = "keyvaults.png"
+    "Microsoft.KeyVault/deletedVaults"                                                           = "keyvaults.png"
+    "Microsoft.KeyVault/locations"                                                               = "keyvaults.png"
+    "Microsoft.KeyVault/locations/deletedVaults"                                                 = "keyvaults.png"
+    "Microsoft.KeyVault/locations/deleteVirtualNetworkOrSubnets"                                 = "keyvaults.png"
+    "Microsoft.KeyVault/locations/operationResults"                                              = "keyvaults.png"
+    "Microsoft.KeyVault/vaults/eventGridFilters"                                                 = "keyvaults.png"
+    "Microsoft.KeyVault/managedHSMs"                                                             = "keyvaults.png"
+    "Microsoft.KeyVault/deletedManagedHSMs"                                                      = "keyvaults.png"
+    "Microsoft.KeyVault/locations/deletedManagedHSMs"                                            = "keyvaults.png"
+    "Microsoft.KeyVault/vaults/keys"                                                             = "keyvaults.png"
+    "Microsoft.KeyVault/vaults/keys/versions"                                                    = "keyvaults.png"
     "Microsoft.Media/mediaServices"                                                              = "mediaservices.png"
     "Microsoft.Network/azureFirewalls"                                                           = "firewall.png"
     "Microsoft.Network/loadBalancers"                                                            = "loadbalancers.png"
@@ -761,7 +813,7 @@ $Images = @{
     "Microsoft.Sql/servers/databases/extensions"                                                 = "sqlservers.png"
     "Microsoft.Sql/servers/databases/geoBackupPolicies"                                          = "sqlservers.png"
     "Microsoft.Sql/servers/databases/schemas/tables/columns/sensitivityLabels"                   = "sqlservers.png"
-    "Microsoft.Sql/servers/databases/securityAlertPolicies"                                     = "sqlservers.png"
+    "Microsoft.Sql/servers/databases/securityAlertPolicies"                                      = "sqlservers.png"
     "Microsoft.Sql/servers/databases/syncGroups"                                                 = "sqlservers.png"
     "Microsoft.Sql/servers/databases/syncGroups/syncMembers"                                     = "sqlservers.png"
     "Microsoft.Sql/servers/databases/transparentDataEncryption"                                  = "sqlservers.png"
@@ -787,18 +839,69 @@ $Images = @{
     "Microsoft.Sql/servers/virtualNetworkRules"                                                  = "sqlservers.png"
     "Microsoft.Sql/servers/vulnerabilityAssessments"                                             = "sqlservers.png"
     "Microsoft.Storage/storageAccounts"                                                          = "storageaccounts.png"
+    "Microsoft.OperationalInsights/workspaces"                                                   = "LogAnalyticsWorkspaces.png"
+    "Microsoft.OperationalInsights/workspaces/scopedPrivateLinkProxies"                          = "LogAnalyticsWorkspaces.png"
+    "Microsoft.OperationalInsights/workspaces/query"                                             = "LogAnalyticsWorkspaces.png"
+    "Microsoft.OperationalInsights/workspaces/metadata"                                          = "LogAnalyticsWorkspaces.png"
+    "Microsoft.OperationalInsights/workspaces/dataSources"                                       = "LogAnalyticsWorkspaces.png"
+    "Microsoft.OperationalInsights/workspaces/linkedStorageAccounts"                             = "LogAnalyticsWorkspaces.png"
+    "Microsoft.OperationalInsights/workspaces/Tables"                                            = "LogAnalyticsWorkspaces.png"
+    "Microsoft.OperationalInsights/workspaces/linkedServices"                                    = "LogAnalyticsWorkspaces.png"
+    "Microsoft.OperationalInsights/deletedWorkspaces"                                            = "LogAnalyticsWorkspaces.png"
+    "Microsoft.OperationalInsights/workspaces/dataExport"                                        = "LogAnalyticsWorkspaces.png"
+    "Microsoft.DataFactory/dataFactories"                                                        = "DataFactories.png"
+    "Microsoft.DataFactory/factories"                                                            = "DataFactories.png"
+    "Microsoft.DataFactory/factories/integrationRuntimes"                                        = "DataFactories.png"
+    "Microsoft.DataFactory/dataFactories/diagnosticSettings"                                     = "DataFactories.png"
+    "Microsoft.DataFactory/dataFactories/metricDefinitions"                                      = "DataFactories.png"
+    "Microsoft.DataFactory/checkDataFactoryNameAvailability"                                     = "DataFactories.png"
+    "Microsoft.DataFactory/checkAzureDataFactoryNameAvailability"                                = "DataFactories.png"
+    "Microsoft.DataFactory/dataFactorySchema"                                                    = "DataFactories.png"
+    "Microsoft.DataFactory/operations"                                                           = "DataFactories.png"
+    "Microsoft.DataFactory/locations"                                                            = "DataFactories.png"
+    "Microsoft.DataFactory/locations/configureFactoryRepo"                                       = "DataFactories.png"
+    "Microsoft.DataFactory/locations/getFeatureValue"                                            = "DataFactories.png"
+    "Microsoft.Web/connections"                                                                  = "APIConnections.png"
+    "Microsoft.Network/frontdoors"                                                               = "FrontDoors.png"
+    "Microsoft.Databricks/workspaces"                                                            = "databricks.png"
+    "Microsoft.Databricks/workspaces/virtualNetworkPeerings"                                     = "databricks.png"
+    "Microsoft.Databricks/workspaces/dbWorkspaces"                                               = "databricks.png"
+    "Microsoft.Databricks/operations"                                                            = "databricks.png"
+    "Microsoft.Databricks/locations"                                                             = "databricks.png"
+    "Microsoft.Databricks/locations/operationstatuses"                                           = "databricks.png"
+    "Microsoft.Databricks/locations/getNetworkPolicies"                                          = "databricks.png"
+    "Microsoft.DataLakeAnalytics/accounts"                                                       = "DataLakeAnalytics.png"
+    "Microsoft.DataLakeAnalytics/accounts/dataLakeStoreAccounts"                                 = "DataLakeAnalytics.png"
+    "Microsoft.DataLakeAnalytics/accounts/storageAccounts"                                       = "DataLakeAnalytics.png"
+    "Microsoft.DataLakeAnalytics/accounts/storageAccounts/containers"                            = "DataLakeAnalytics.png"
+    "Microsoft.DataLakeAnalytics/accounts/storageAccounts/containers/listSasTokens"              = "DataLakeAnalytics.png"
+    "Microsoft.DataLakeAnalytics/locations"                                                      = "DataLakeAnalytics.png"
+    "Microsoft.DataLakeAnalytics/locations/operationresults"                                     = "DataLakeAnalytics.png"
+    "Microsoft.DataLakeAnalytics/locations/checkNameAvailability"                                = "DataLakeAnalytics.png"
+    "Microsoft.DataLakeAnalytics/locations/capability"                                           = "DataLakeAnalytics.png"
+    "Microsoft.DataLakeAnalytics/locations/usages"                                               = "DataLakeAnalytics.png"
+    "Microsoft.DataLakeAnalytics/operations"                                                     = "DataLakeAnalytics.png"
+    "Microsoft.EventHub/namespaces"                                                              = "EventHubs.png"
+    "Microsoft.EventHub/clusters"                                                                = "EventHubClusters.png"
+    "Microsoft.EventHub/namespaces/authorizationrules"                                           = "EventHubs.png"
+    "Microsoft.EventHub/namespaces/networkrulesets"                                              = "EventHubs.png"
+    "Microsoft.EventHub/namespaces/eventhubs"                                                    = "EventHubs.png"
+    "Microsoft.EventHub/namespaces/eventhubs/authorizationrules"                                 = "EventHubs.png"
+    "Microsoft.EventHub/namespaces/eventhubs/consumergroups"                                     = "EventHubs.png"
+    "Microsoft.EventHub/checkNamespaceAvailability"                                              = "EventHubs.png"
+    "Microsoft.EventHub/checkNameAvailability"                                                   = "EventHubs.png"
+    "Microsoft.EventHub/sku"                                                                     = "EventHubs.png"
+    "Microsoft.EventHub/operations"                                                              = "EventHubs.png"
+    "Microsoft.EventHub/namespaces/disasterrecoveryconfigs"                                      = "EventHubs.png"
+    "Microsoft.EventHub/namespaces/disasterrecoveryconfigs/checkNameAvailability"                = "EventHubs.png"
+    "Microsoft.EventHub/locations"                                                               = "EventHubs.png"
+    "Microsoft.EventHub/locations/deleteVirtualNetworkOrSubnets"                                 = "EventHubs.png"
+    "Microsoft.EventHub/availableClusterRegions"                                                 = "EventHubs.png"
     "Microsoft.Web/sites"                                                                        = "appservices.png"
     "config"                                                                                     = "appconfiguration.png"
     "resources"                                                                                  = "resources.png"
 }
 
-# $files = Get-Childitem "c:\Users\prasingh\AzViz\src\private\Icons_old\" -Recurse -Filter *.png
-# $Images = @{}
-# foreach ($f in $files) { 
-#     $value = $f.fullname
-#     $key = (Split-Path $value -Leaf).replace(".png", "")
-#     $Images.Add($key,$value)
-# }
 
 Function Get-ImageNode {
     param(
@@ -811,65 +914,24 @@ Function Get-ImageNode {
         [String]$FillColor = 'White'
     )
 
-    $Shapes = @{
-        loadBalancers                            = 'diamond'
-        publicIPAddresses                        = 'octagon'
-        networkInterfaces                        = 'component'
-        virtualMachines                          = 'box3d'
-        'loadBalancers/backendAddressPools'      = 'rect'
-        'loadBalancers/frontendIPConfigurations' = 'rect'
-        'virtualNetworks'                        = 'oval'
-        'networkSecurityGroups'                  = 'oval'
-    }
-    
-    $Styles = @{
-        loadBalancers                            = 'filled'
-        publicIPAddresses                        = 'filled'
-        networkInterfaces                        = 'filled'
-        virtualMachines                          = 'filled'
-        'loadBalancers/backendAddressPools'      = 'filled'
-        'loadBalancers/frontendIPConfigurations' = 'filled'
-        'virtualNetworks'                        = 'dotted'
-        'networkSecurityGroups'                  = 'filled'
-    }
-    
-    $Colors = @{
-        loadBalancers                            = 'greenyellow'
-        publicIPAddresses                        = 'gold'
-        networkInterfaces                        = 'skyblue'
-        'loadBalancers/frontendIPConfigurations' = 'lightsalmon'
-        virtualMachines                          = 'darkolivegreen3'
-        'loadBalancers/backendAddressPools'      = 'crimson'
-        'virtualNetworks'                        = 'navy'
-        'networkSecurityGroups'                  = 'azure'
-    }
-
     $TR = ''
     $flag = $true
-    foreach($r in $Rows){
+    foreach ($r in $Rows) {
         if ($flag) {
-            $TR += '<TR><TD align="center"><B>{0}</B></TD></TR>' -f $r
+            $TR += '<TR><TD align="center" colspan="2"><B><FONT POINT-SIZE="15">{0}</FONT></B></TD></TR>' -f $r
             $flag = $false
         }
-        else{
-            $TR += '<TR><TD align="center">{0}</TD></TR>' -f $r
+        else {
+            $TR += '<TR><TD align="right"><FONT POINT-SIZE="9">Provider:</FONT></TD><TD align="left"><FONT POINT-SIZE="9">{0}</FONT></TD></TR><TR><TD align="right"><FONT POINT-SIZE="9">Type:</FONT></TD><TD align="left"><FONT POINT-SIZE="9">{1}</FONT></TD></TR>' -f $r.Split('/', 2)
         }
     }
 
     $Path = $images[$Type]
     if ($Path) {
-        '"{0}" [label=<<TABLE border="0" cellborder="0" cellpadding="0"><TR><TD ALIGN="center" ><img src="{1}"/></TD></TR>{2}</TABLE>>;fillcolor="white";shape="none";penwidth="1";fontname="Courier New";]' -f $Name, "$PSScriptRoot\icons\$($images[$Type])", $TR
+        '"{0}" [label=<<TABLE border="0" cellborder="0" cellpadding="0"><TR><TD ALIGN="center" colspan="2"><img src="{1}"/></TD></TR>{2}</TABLE>>;fillcolor="white";shape="none";penwidth="1";fontname="Courier New";]' -f $Name, "$ProjectRoot\icons\$($images[$Type])", $TR
     }
     else {
-        '"{0}" [label=<<TABLE border="0" cellborder="0" cellpadding="0"><TR><TD ALIGN="center" ><img src="{1}"/></TD></TR>{2}</TABLE>>;fillcolor="white";shape="none";penwidth="1";fontname="Courier New";]' -f $Name, "$PSScriptRoot\icons\$($images["resources"])", $TR
-        # node $Name -Attributes @{
-        #     Label     = $Rows; 
-        #     shape     = $Shapes[$Type];
-        #     style     = $styles[$Type] ; 
-        #     fillcolor = $Colors[$Type];
-        #     penwidth  = "1";
-        #     fontname  = "Courier New"
-        # }
+        '"{0}" [label=<<TABLE border="0" cellborder="0" cellpadding="0"><TR><TD ALIGN="center" colspan="2"><img src="{1}"/></TD></TR>{2}</TABLE>>;fillcolor="white";shape="none";penwidth="1";fontname="Courier New";]' -f $Name, "$ProjectRoot\icons\$($images["resources"])", $TR
     }
 
 }

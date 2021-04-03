@@ -1,3 +1,4 @@
+$ProjectRoot = (Get-location).Path
 $Path = [System.IO.Path]::Combine($PSScriptRoot, 'src')
 Get-Childitem $Path -Filter *.ps1 -Recurse | Foreach-Object {
     . $_.Fullname
@@ -5,16 +6,15 @@ Get-Childitem $Path -Filter *.ps1 -Recurse | Foreach-Object {
 
 
 # verify dependent modules are loaded
-$DependentModules = 'PSGraph', 'az'
+$DependentModules = 'PSGraph', 'az', 'PSArm' #, 'MSCloudLoginAssistant', 'AzureADPreview'
 $Installed = Import-Module $DependentModules -PassThru -ErrorAction SilentlyContinue | Where-Object { $_.name -In $DependentModules }
-$missing = $DependentModules | Where-Object { $_ -notin $Installed.name }
-if ($missing) {
-    Write-host "    [+] Module dependencies not found [$missing]. Attempting to install." -ForegroundColor Green
-    Install-Module $missing -Force -AllowClobber -Confirm:$false -Scope CurrentUser
-    Import-Module $missing
+$Missing = $DependentModules | Where-Object { $_ -notin $Installed.name }
+if ($Missing) {
+    Write-host "    [+] Module dependencies not found [$Missing]. Attempting to install." -ForegroundColor Green
+    Install-Module $Missing -Force -AllowClobber -Confirm:$false -Scope CurrentUser -AllowPrerelease
+    Import-Module $Missing
 }
-
-Import-Module C:\Users\prasingh\Downloads\psarm.0.1.0-alpha1\PSArm.psd1
+# Import-Module C:\Users\prasingh\Downloads\psarm.0.1.0-alpha1\PSArm.psd1
 
 # Install GraphViz from the Chocolatey repo
 if(!(Get-Package GraphViz)){
