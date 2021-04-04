@@ -50,4 +50,9 @@ Get-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -ShowGr
 
 ## Demo Video - Youtube
 
-[![](http://img.youtube.com/vi/7rsNGJ-QmEA/120.jpg)](http://www.youtube.com/watch?v=7rsNGJ-QmEA)
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/7rsNGJ-QmEA" 
+frameborder="0" 
+allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+allowfullscreen>
+</iframe>
