@@ -50,4 +50,4 @@ Get-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -ShowGr
 
 ## Demo Video - Youtube
 
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/7rsNGJ-QmEA/120.jpg)](http://www.youtube.com/watch?v=7rsNGJ-QmEA "Azure Resource Topology Diagrams using PowerShell")
+[![](http://img.youtube.com/vi/7rsNGJ-QmEA/120.jpg)](http://www.youtube.com/watch?v=7rsNGJ-QmEA)
