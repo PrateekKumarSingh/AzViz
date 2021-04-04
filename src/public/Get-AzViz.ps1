@@ -6,78 +6,94 @@ Short description
 Long description
 
 .PARAMETER ResourceGroups
-Parameter description
+Target resource groups 
 
 .PARAMETER ShowGraph
-Parameter description
+Launches visualization image
+
+.PARAMETER LabelVerbosity
+Level of information to included in vizualization
+
+.PARAMETER CategoryDepth
+Level of Azure Resource Sub-category to be included in vizualization
+
+-CategoryDepth 'level1' only allow resource catergores like: Microsoft.EventGrid/topics and  Microsoft.ServiceBus/namespaces
+-CategoryDepth 'level2' only allow resource catergores like: Microsoft.ServiceBus/namespaces/AuthorizationRules and  Microsoft.ServiceBus/namespaces/networkRuleSets
 
 .PARAMETER OutputFormat
-Parameter description
+Output format of the vizualization, i.e, .png or .svg
 
-.EXAMPLE
-Target an Azure resource group and visualize the Network Topology 
-
-Get-AzViz -ResourceGroups 'test-resource-group'
-
+.PARAMETER Theme
+Changes the color theme, i.e 'light', 'dark' or 'neon'. Default is 'light'.
 
 .EXAMPLE
 An example
 
-Get-AzViz -ResourceGroups 'test-resource-group' -ShowGraph -OutputFormat png -Verbose
+Get-AzViz -ResourceGroups demo-2 -LabelVerbosity 2 -CategoryDepth 2 -Theme light -Verbose -ShowGraph -OutputFormat png
 
 .NOTES
 Project URL: https://github.com/PrateekKumarSingh/azviz
+Author: 
+    https://twitter.com/singhprateik
+    https://www.linkedin.com/in/prateeksingh1590
 #>
-
 function Get-AzViz {
     [alias("AzViz")]
     [CmdletBinding()]
     param (
-        # Resource Groups 
+        # Target resource groups 
         [string[]]
         $ResourceGroups = (Get-AzResourceGroup).ResourceGroupName,
-        # Shows Visualization Graph
+        # Launches visualization image
         [switch] $ShowGraph,
         # Level of information to included in vizualization
-        [ValidateSet('level1', 'level2', 'level3')]
-        [string] $Information = 'level1',
-        # Output format of the image
+        [ValidateSet(1, 2, 3)]
+        [int] $LabelVerbosity = 1,
+        # Level of Azure Resource Sub-category to be included in vizualization
+        [ValidateSet(1, 2, 3)]
+        [int] $CategoryDepth = 1,
+        # Output format of the vizualization
         [ValidateSet('png', 'svg')]
         [string]
         $OutputFormat = 'png',
-        [switch] $DarkMode,
-        # Level of Azure Resource Sub-category to be included in vizualization
-        [ValidateSet('level1', 'level2', 'level3')]
-        [string] $Depth = 'level1'
+        # Changes the color theme, i.e light or dark
+        [ValidateSet('light', 'dark', 'neon')]
+        [string] $Theme = 'light'
     )
         
     #region defaults
 
-    if ($ShowGraph) {
-        $ShowGraph = $true
-    }
-    else {
-        $ShowGraph = $false
-    }
-
-    if ($DarkMode) {
-        Write-Verbose "`'Dark mode`' is enabled."
-        $GraphColor = 'Black'
-        $SubGraphColor = 'White'
-        $GraphFontColor = 'White'
-        $EdgeColor = 'White'
-        $EdgeFontColor = 'White'
-        $NodeColor = 'White'
-        $NodeFontColor = 'White'
-    }
-    else {
-        $GraphColor = 'White'
-        $SubGraphColor = 'Black'
-        $GraphFontColor = 'Black'
-        $EdgeColor = 'Black'
-        $EdgeFontColor = 'Black'
-        $NodeColor = 'Black'
-        $NodeFontColor = 'Black'
+    switch ($Theme) {
+        'light' { 
+            $GraphColor = 'White'
+            $SubGraphColor = 'Black'
+            $GraphFontColor = 'Black'
+            $EdgeColor = 'Black'
+            $EdgeFontColor = 'Black'
+            $NodeColor = 'Black'
+            $NodeFontColor = 'Black'
+            break
+        }
+        'dark' { 
+            $GraphColor = 'Black'
+            $SubGraphColor = 'White'
+            $GraphFontColor = 'White'
+            $EdgeColor = 'White'
+            $EdgeFontColor = 'White'
+            $NodeColor = 'White'
+            $NodeFontColor = 'White'
+            break
+        }
+        'neon' {
+            $GraphColor = 'Black'
+            $SubGraphColor = 'x11green'
+            $GraphFontColor = 'x11green'
+            $EdgeColor = 'x11green'
+            $EdgeFontColor = 'x11green'
+            $NodeColor = 'x11green'
+            $NodeFontColor = 'x11green'
+            break
+        }
     }
 
     $rank = @{
@@ -89,28 +105,31 @@ function Get-AzViz {
         "Microsoft.Compute/virtualMachines"       = 6
     }
 
-    switch ($Depth) {
-        'level1' { $depthlevel = 2 }
-        'level2' { $depthlevel = 3 }
-        'level3' { $depthlevel = 4 }
-    }
+    Write-Verbose "Configuring Defaults..."
+    Write-Verbose " [+] Label Verbosity      : $LabelVerbosity"
+    Write-Verbose " [+] Category Depth       : $CategoryDepth"
+    Write-Verbose " [+] Theme                : $Theme"
+    Write-Verbose " [+] Output Format        : $OutputFormat"
+    Write-Verbose " [+] Launch Visualization : $ShowGraph"
 
     #endregion defaults
 
     #region graph-generation
-    Write-Verbose "Starting topology graph generation"
+    Write-Verbose "Starting to generate Azure visualization..."
     Write-Verbose "Target resource groups: $($ResourceGroups.ForEach({"'{0}'" -f $_}) -join ', ')"
-    $graph = Graph 'AzureTopology' @{overlap = 'false'; splines = 'true' ; rankdir = 'TB'; color = $GraphColor; bgcolor = $GraphColor; fontcolor = $GraphFontColor } {
+    $graph = Graph 'Visualization' @{overlap = 'false'; splines = 'true' ; rankdir = 'TB'; color = $GraphColor; bgcolor = $GraphColor; fontcolor = $GraphFontColor } {
         
         edge @{color = $EdgeColor; fontcolor = $EdgeFontColor }
         node @{color = $NodeColor ; fontcolor = $NodeFontColor }
         
         if (Test-AzLogin) {
             foreach ($ResourceGroup in $ResourceGroups) {
-            
-                if (Get-AzResource -ResourceGroupName $ResourceGroup) {
+                
+                $resources = Get-AzResource -ResourceGroupName $ResourceGroup
+                if ($resources) {
 
-                    Write-Verbose "Plotting graph for resource group: `"$ResourceGroup`""
+                    Write-Verbose " [+] Plotting sub-graph for resource group: `"$ResourceGroup`""
+                    # Write-Verbose " [+] Total resources found: $($resources.count)"
 
                     SubGraph "$($ResourceGroup.Replace('-', ''))" @{label = $ResourceGroup; labelloc = 'b'; penwidth = "1"; fontname = "Courier New" ; color = $SubGraphColor; } {
                     
@@ -122,7 +141,7 @@ function Get-AzViz {
                         # $excluded_types = @("scheduledqueryrules","containers","solutions","modules","savedSearches")
                     
                         $data += $arm.Resources |
-                        Where-Object { $_.type.tostring().split("/").count -le $depthlevel } |
+                        Where-Object { $_.type.tostring().split("/").count -le $($CategoryDepth+1) } |
                         ForEach-Object {
                             $dependson = $null
                             if ($_.dependson) {
@@ -158,6 +177,7 @@ function Get-AzViz {
 
                         $data | 
                         Where-Object to | 
+                        Tee-Object -Variable pipe_var |
                         ForEach-Object {
                             $from = $_.from
                             $fromcateg = $_.fromcateg
@@ -167,32 +187,50 @@ function Get-AzViz {
                                 Edge -From "$fromcateg$from".ToUpper() `
                                     -to "$tocateg$to".ToUpper() `
                                     -Attributes @{
-                                    arrowhead = 'none';
-                                    style     = 'dashed';
-                                    label     = ''
+                                    arrowhead = 'normal';
+                                    style     = 'dotted';
+                                    label     = 'dependsOn'
                                     penwidth  = "1"
                                     fontname  = "Courier New"
                                 }
 
-                                if ($Information -eq 'level1') {
+                                Write-Verbose "   > Creating Edge: $from -> $to"
+
+                                if ($LabelVerbosity -eq 1) {
                                     Get-ImageNode -Name "$fromcateg$from".ToUpper() -Rows $from -Type $fromcateg   
-                                    Get-ImageNode -Name "$tocateg$to".ToUpper() -Rows $to -Type $tocateg   
+                                    Get-ImageNode -Name "$tocateg$to".ToUpper() -Rows $to -Type $tocateg
+    
+                                    Write-Verbose "   > Creating Node: $from"
+                                    Write-Verbose "   > Creating Node: $to"
                                 }
-                                elseif ($Information -eq 'level2') {
+                                elseif ($LabelVerbosity -eq 2) {
                                     Get-ImageNode -Name "$fromcateg$from".ToUpper() -Rows ($from, $fromcateg) -Type $fromcateg
                                     Get-ImageNode -Name "$tocateg$to".ToUpper() -Rows ($to, $toCateg) -Type $tocateg   
+
+                                    Write-Verbose "   > Creating Node: $from"
+                                    Write-Verbose "   > Creating Node: $to"
                                 }
                             }
                             else {
-                                if ($Information -eq 'level1') {
+                                if ($LabelVerbosity -eq 1) {
                                     Get-ImageNode -Name "$fromcateg$from".ToUpper() -Rows $from -Type $fromcateg   
+
+                                    Write-Verbose "   > Creating Node: $from"
                                 }
-                                elseif ($Information -eq 'level2') {
+                                elseif ($LabelVerbosity -eq 2) {
                                     Get-ImageNode -Name "$fromcateg$from".ToUpper() -Rows ($from, $fromcateg) -Type $fromcateg
+                                    Write-Verbose "   > Creating Node: $to"
                                 }
                             }
                         }
+
+                        # Write-Verbose " [+] Total resources filtered: $($pipe_var.count)"
+                        if(!$pipe_var){
+                            Write-Warning " [-] No resources found.. re-run the command and try increasing the category depth using -Depth level2 or -Depth level3 cmdlet parameters." -Verbose
+                        }
                         #endregion plotting-edges-to-nodes
+
+                        #region ranking-nodes
 
                         # foreach($item in $data | Group-Object rank){
                         #     $nodes = foreach($group in $item.Group){
@@ -202,15 +240,16 @@ function Get-AzViz {
                         #         $tocateg = $group.tocateg
                         #         "`"$fromcateg$from`"".ToUpper()
                         #     }
-                            
                         #     "{rank = `"same`"; $($nodes -join '; ')}"
                         # }
+
+                        #endregion ranking-nodes
+
                     }
                     #endregion plotting-all-remaining-nodes
-            
                 }
                 else {
-                    Write-Verbose "Skipping resource group: `"$ResourceGroup`" as no resources were found."             
+                    Write-Verbose " [-] Skipping resource group: `"$ResourceGroup`" as no resources were found."             
                 }
             }
         } 
@@ -218,10 +257,13 @@ function Get-AzViz {
     
     @"
 strict $graph
-"@ | Export-PSGraph -ShowGraph:$ShowGraph -OutputFormat $OutputFormat -DestinationPath C:\temp\out.png -OutVariable output
+"@ | 
+    Export-PSGraph -ShowGraph:$ShowGraph -OutputFormat $OutputFormat -DestinationPath C:\temp\out.png -OutVariable output |
+    Out-Null
     #endregion graph-generation
 
     Write-Verbose "Graph Exported to path: $($output.fullname)"
+    Write-Verbose "Finished Azure visualization."
 }
 
 Export-ModuleMember Get-AzViz
