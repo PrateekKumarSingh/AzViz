@@ -12,7 +12,7 @@ It is capable of:
  
 ## Demo Video - Youtube
 
-[![Demo Video](https://img.youtube.com/vi/7rsNGJ-QmEA/0.jpg)](https://www.youtube.com/watch?v=7rsNGJ-QmEA)
+[![Demo Video](https://img.youtube.com/vi/7rsNGJ-QmEA/51.jpg)](https://www.youtube.com/watch?v=7rsNGJ-QmEA)
 ## How to use?
 
 ```PowerShell
