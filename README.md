@@ -10,6 +10,9 @@ It is capable of:
  * Generate visualization in formats like: .png and .svg
  * Output image can be in 'light', 'dark' or 'neon' theme.
  
+## Demo Video - Youtube
+
+[![Demo Video](https://img.youtube.com/vi/7rsNGJ-QmEA/0.jpg)](https://www.youtube.com/watch?v=7rsNGJ-QmEA)
 ## How to use?
 
 ```PowerShell
@@ -47,7 +50,3 @@ Get-AzViz -ResourceGroups demo-2, demo-3 -LabelVerbosity 1 -CategoryDepth 1 -The
 Get-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -ShowGraph -LabelVerbosity 2
 ```
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/LabelVerbosity.png)
-
-## Demo Video - Youtube
-
-[![Demo Video](https://img.youtube.com/vi/7rsNGJ-QmEA/0.jpg)](https://www.youtube.com/watch?v=7rsNGJ-QmEA)
