@@ -1,6 +1,8 @@
-# AzViz
+# AzViz - Azure Visualizer
 
 Azure Visualizer aka 'AzViz' - PowerShell module to automatically generate Azure resource topology diagrams by just typing a PowerShell cmdlet and passing the name of one or more Azure Resource Group(s).
+
+**NOTE:** Cloud admins are not nymore doomed to manually document a cloud enviroment! Pain of inheriting an undocumented cloud landscape to support is gone 😎😉
 
 It is capable of:
  * Finding Resources in a Azure Resource Group and identifying their dependencies.
@@ -9,7 +11,11 @@ It is capable of:
  * Label each resource with information like Name, Category, Type etc.
  * Generate visualization in formats like: .png and .svg
  * Output image can be in 'light', 'dark' or 'neon' theme.
+ * Can target more than one resource group at once.
+ * Change direction in which resource groups are plotted, i.e, left-to-right or top-to-bottom.
  
+![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/LabelVerbosity.png)
+
 ## Demo Video - Youtube
 
 [![Demo Video](https://img.youtube.com/vi/7rsNGJ-QmEA/0.jpg)](https://www.youtube.com/watch?v=7rsNGJ-QmEA)

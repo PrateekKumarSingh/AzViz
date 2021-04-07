@@ -204,7 +204,7 @@ function Get-AzViz {
                         break
                     }
                     Write-Verbose " [+] Exporting ARM template of Azure Resource group: `"$target`""
-                    $template = (Export-AzResourceGroup -ResourceGroupName $target -SkipAllParameterization -Force -Path $env:TEMP\template.json).Path
+                    $template = (Export-AzResourceGroup -ResourceGroupName $target -SkipAllParameterization -Force -Path $env:TEMP\armtemplate.json).Path
                 }
                 'File' { 
                     Write-Verbose " [+] Accessing ARM template from local file: `"$target`""
@@ -230,7 +230,7 @@ function Get-AzViz {
                 Remove-Item $template -Force
             }
             else {
-                Write-Verbose " [+] Total resources found: $($resources.count)"
+                Write-Verbose " [+] Total resources/sub-resources found: $($resources.count)"
                 Write-Verbose " [-] Skipping ${TargetType}: `"$target`" as no resources were found."
                 break        
             }
