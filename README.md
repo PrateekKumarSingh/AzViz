@@ -16,37 +16,42 @@ It is capable of:
 ## How to use?
 
 ```PowerShell
+# clone the project from github
 git clone https://github.com/PrateekKumarSingh/AzViz.git
 
 Set-Location .\AzViz\
    
+# import the powershell module
 Import-Module .\AzViz.psm1 -Verbose
+
+# login to azure
+Connect-AzAccount
 ```
 ### Target Single Resource Group
 
 ```PowerShell
 # target single resource group
-Get-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -ShowGraph
+Get-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -ShowVisualization
 ```
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/SingleResourceGroup.png)
 ### Target Single Resource Group with more sub-categories
 
 ```PowerShell
 # target single resource group with more sub-categories
-Get-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -ShowGraph -CategoryDepth 2
+Get-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -ShowVisualization -CategoryDepth 2
 ```
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/SingleResourceGroupSubCategories.png)
 ### Target Multiple Resource Groups
 
 ```PowerShell
 # target multiple resource groups
-Get-AzViz -ResourceGroups demo-2, demo-3 -LabelVerbosity 1 -CategoryDepth 1 -Theme light -Verbose -ShowGraph -OutputFormat png
+Get-AzViz -ResourceGroups demo-2, demo-3 -LabelVerbosity 1 -CategoryDepth 1 -Theme light -Verbose -ShowVisualization -OutputFormat png
 ```
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/MultipleResourceGroups.png)
 ### Add Verbosity to Resource Label
 
 ```PowerShell
 # adding more information in resource label like: Name, type, Provider etc
-Get-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -ShowGraph -LabelVerbosity 2
+Get-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -ShowVisualization -LabelVerbosity 2
 ```
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/LabelVerbosity.png)
