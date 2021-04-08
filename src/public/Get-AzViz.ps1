@@ -280,7 +280,7 @@ function Get-AzViz {
             #region plotting-edges-to-nodes
 
             $nodes_and_edges = $data | 
-            Where-Object to | 
+            # Where-Object to | 
             Tee-Object -Variable pipe_var |
             ForEach-Object {
                 $from = $_.from
