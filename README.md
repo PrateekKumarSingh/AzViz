@@ -22,20 +22,38 @@ It is capable of:
 ## Demo Video - Youtube
 
 [![Demo Video](https://img.youtube.com/vi/7rsNGJ-QmEA/0.jpg)](https://www.youtube.com/watch?v=7rsNGJ-QmEA)
-## How to use?
+
+
+## Installation 
+### From PowerShell Gallery
 
 ```PowerShell
-# clone the project from github
-git clone https://github.com/PrateekKumarSingh/AzViz.git
+# install from powershell gallery
+Install-Module AzViz -Verbose -Scope CurrentUser -Force
 
+# import the module
+Import-Module AzViz -Verbose
+
+# login to azure, this is required for module to work
+Connect-AzAccount
+```
+
+### Clone the project from GitHub
+
+```PowerShell
+# optionally clone the project from github
+git clone https://github.com/PrateekKumarSingh/AzViz.git
 Set-Location .\AzViz\
    
 # import the powershell module
 Import-Module .\AzViz.psm1 -Verbose
 
-# login to azure
+# login to azure, this is required for module to work
 Connect-AzAccount
 ```
+
+## How to use?
+
 ### Target Single Resource Group
 
 ```PowerShell
