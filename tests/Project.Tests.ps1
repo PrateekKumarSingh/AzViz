@@ -1,5 +1,5 @@
-$projectRoot = Resolve-Path "$PSScriptRoot\.."
-$moduleRoot = "$projectRoot\"
+$projectRoot = Resolve-Path (Split-Path  $PSScriptRoot -Parent)
+$moduleRoot = Join-Path $projectRoot ([System.IO.Path]::DirectorySeparatorChar)
 # $moduleName = Split-Path $moduleRoot -Leaf
 
 Describe "PSScriptAnalyzer rule-sets" -Tag Build {

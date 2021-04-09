@@ -920,6 +920,7 @@ Function Get-ImageNode {
 
 
     $RootPath = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
+    $IconPath = Join-Path $RootPath 'icons'
 
     $TR = ''
     $flag = $true
@@ -935,10 +936,10 @@ Function Get-ImageNode {
 
     $Path = $images[$Type]
     if ($Path) {
-        '"{0}" [label=<<TABLE border="0" cellborder="0" cellpadding="0"><TR><TD ALIGN="center" colspan="2"><img src="{1}"/></TD></TR>{2}</TABLE>>;fillcolor="white";shape="none";penwidth="1";fontname="Courier New";]' -f $Name, "$RootPath\icons\$($images[$Type])", $TR
+        '"{0}" [label=<<TABLE border="0" cellborder="0" cellpadding="0"><TR><TD ALIGN="center" colspan="2"><img src="{1}"/></TD></TR>{2}</TABLE>>;fillcolor="white";shape="none";penwidth="1";fontname="Courier New";]' -f $Name, $(Join-Path $IconPath $images[$Type]), $TR
     }
     else {
-        '"{0}" [label=<<TABLE border="0" cellborder="0" cellpadding="0"><TR><TD ALIGN="center" colspan="2"><img src="{1}"/></TD></TR>{2}</TABLE>>;fillcolor="white";shape="none";penwidth="1";fontname="Courier New";]' -f $Name, "$RootPath\icons\$($images["resources"])", $TR
+        '"{0}" [label=<<TABLE border="0" cellborder="0" cellpadding="0"><TR><TD ALIGN="center" colspan="2"><img src="{1}"/></TD></TR>{2}</TABLE>>;fillcolor="white";shape="none";penwidth="1";fontname="Courier New";]' -f $Name, $(Join-Path $IconPath $images["resources"]), $TR
     }
 
 }

@@ -1,5 +1,9 @@
 # AzViz - Azure Visualizer
 
+
+[![PowerShell Gallery](https://img.shields.io/powershellgallery/v/AzViz.svg)](https://www.powershellgallery.com/packages/AzViz/) [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/AzViz.svg)](https://www.powershellgallery.com/packages/AzViz/) [![GitHub issues](https://img.shields.io/github/issues/PrateekKumarSingh/AzViz.svg)](https://github.com/PrateekKumarSingh/AzViz/issues)
+
+
 Azure Visualizer aka 'AzViz' - PowerShell module to automatically generate Azure resource topology diagrams by just typing a PowerShell cmdlet and passing the name of one or more Azure Resource Group(s).
 
 
@@ -23,6 +27,38 @@ It is capable of:
 
 [![Demo Video](https://img.youtube.com/vi/7rsNGJ-QmEA/0.jpg)](https://www.youtube.com/watch?v=7rsNGJ-QmEA)
 
+## Prerequisite
+
+We need to install GraphViz on our system before we can proceed with using the 'AzViz' PowerShell module. Depending upon the operating system you are using please follow the below mentioned steps:
+### Linux
+
+
+```bash
+# Ubuntu
+$ sudo apt install graphviz
+
+# Fedora
+$ sudo yum install graphviz
+
+# Debian
+$ sudo apt install graphviz
+```
+
+### Windows
+
+```PowerShell
+# chocolatey packages Graphviz for Windows
+choco install graphviz
+
+# alternatively using windows package manager
+winget install graphviz
+```
+
+### Mac
+
+```PowerShell
+brew install graphviz
+```
 
 ## Installation 
 ### From PowerShell Gallery
@@ -58,27 +94,27 @@ Connect-AzAccount
 
 ```PowerShell
 # target single resource group
-Get-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -ShowVisualization
+Export-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -Show
 ```
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/SingleResourceGroup.png)
 ### Target Single Resource Group with more sub-categories
 
 ```PowerShell
 # target single resource group with more sub-categories
-Get-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -ShowVisualization -CategoryDepth 2
+Export-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -Show -CategoryDepth 2
 ```
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/SingleResourceGroupSubCategories.png)
 ### Target Multiple Resource Groups
 
 ```PowerShell
 # target multiple resource groups
-Get-AzViz -ResourceGroups demo-2, demo-3 -LabelVerbosity 1 -CategoryDepth 1 -Theme light -Verbose -ShowVisualization -OutputFormat png
+Export-AzViz -ResourceGroups demo-2, demo-3 -LabelVerbosity 1 -CategoryDepth 1 -Theme light -Verbose -Show -OutputFormat png
 ```
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/MultipleResourceGroups.png)
 ### Add Verbosity to Resource Label
 
 ```PowerShell
 # adding more information in resource label like: Name, type, Provider etc
-Get-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -ShowVisualization -LabelVerbosity 2
+Export-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -Show -LabelVerbosity 2
 ```
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/LabelVerbosity.png)
