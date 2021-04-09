@@ -135,12 +135,12 @@ function Get-AzViz {
         }
         'neon' {
             $GraphColor = 'Black'
-            $SubGraphColor = 'x11green'
-            $GraphFontColor = 'x11green'
-            $EdgeColor = 'x11green'
-            $EdgeFontColor = 'x11green'
-            $NodeColor = 'x11green'
-            $NodeFontColor = 'x11green'
+            $SubGraphColor = 'YellowGreen'
+            $GraphFontColor = 'YellowGreen'
+            $EdgeColor = 'YellowGreen'
+            $EdgeFontColor = 'YellowGreen'
+            $NodeColor = 'YellowGreen'
+            $NodeFontColor = 'YellowGreen'
             break
         }
     }
