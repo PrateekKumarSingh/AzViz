@@ -1,5 +1,5 @@
 $projectRoot = Resolve-Path (Split-Path  $PSScriptRoot -Parent)
-$moduleRoot = Join-Path $projectRoot 'module' 
+$moduleRoot = Join-Path $projectRoot 'AzViz' 
 # $moduleName = Split-Path $moduleRoot -Leaf
 
 Describe "PSScriptAnalyzer rule-sets" -Tag Build {
