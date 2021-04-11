@@ -1,11 +1,8 @@
 # AzViz - Azure Visualizer
 
-
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/v/AzViz.svg)](https://www.powershellgallery.com/packages/AzViz/) [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/AzViz.svg)](https://www.powershellgallery.com/packages/AzViz/) [![GitHub issues](https://img.shields.io/github/issues/PrateekKumarSingh/AzViz.svg)](https://github.com/PrateekKumarSingh/AzViz/issues)
 
-
 Azure Visualizer aka 'AzViz' - PowerShell module to automatically generate Azure resource topology diagrams by just typing a PowerShell cmdlet and passing the name of one or more Azure Resource Group(s).
-
 
 > _Cloud admins are not anymore doomed to manually document a cloud environment! The pain of inheriting an undocumented cloud landscape to support is gone 😎😉 so please share this project with your colleagues and friends._
 
