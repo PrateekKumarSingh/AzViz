@@ -24,5 +24,5 @@ jobs:
       run: |
         Get-ChildItem -Path env:
         Write-Host 'Publishing module to PowerShell Gallery'
-        Publish-Module -Path ./module/ -NuGetApiKey $env:NuGetApiKey -Verbose
+        Publish-Module -Path ./module/. -NuGetApiKey $env:NuGetApiKey -Verbose
         Write-Host 'Finished publishing module to PowerShell Gallery'
