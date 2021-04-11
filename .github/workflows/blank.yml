@@ -1,0 +1,28 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+    
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: generate book preview
+      shell: pwsh
+      env:
+        NuGetApiKey: ${{ secrets.PS_GALLERY_KEY }}
+      run: |
+        Get-ChildItem -Path env:
+        Write-Host 'Publishing module to PowerShell Gallery'
+        Publish-Module -Path ./AzViz/ -NuGetApiKey $env:NuGetApiKey -Verbose
+        Write-Host 'Finished publishing module to PowerShell Gallery'
