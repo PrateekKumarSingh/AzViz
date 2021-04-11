@@ -22,3 +22,20 @@ Azure Visualizer aka 'AzViz' - PowerShell module to automatically generate Azure
 ## Demo Video
 
 [![Demo Video](https://img.youtube.com/vi/7rsNGJ-QmEA/0.jpg)](https://www.youtube.com/watch?v=7rsNGJ-QmEA)
+
+## Future of this Module
+
+* Right now I'm fiddling with two ideas to generate the visualization
+using **dependsOn property** in ARM template to find dependency in an ARM template
+and using Network watcher to find associations. Which also provides the network flow like **`PublicIP > LoadBalancer > NIC > VM`**. I may end up using both because both have pros and cons, and by overlaying data from both these approaches on the same graph will give amazing details and insights of you Azure infrastructure.
+
+* Today we only use '**GraphViz**' which is open-source visualization software, I will add support for more visualization engines, graphing tools like: Visio, Lucid Charts, etc
+
+* Ability to expose '**Custom properties**' of an Azure resource type on the image, like IPAddress on NIC card etc
+
+* Right now, the module doesn't support **clustering similar resources and subcategories into a logical cluster/group**. This is a work in progress and would make the diagram much easier to understand once implemented
+
+* Ability to exclude Azure resource types like `Microsoft.Storage/storageAccounts/blobServices`
+Support visualization from ARM templates passed as an URL or a local File - Work in progress!.
+
+* **Infrastructure DIFF!** yeah, you heard it right this is going to be my favorite feature to implement. This will give us the **ability to identify/detect what has changed in Azure infrastructure**, for example, a resource has been deleted, or IPAddress has been changed something like that.

@@ -1,6 +1,16 @@
 # AzViz - Azure Visualizer
 
-[![PowerShell Gallery](https://img.shields.io/powershellgallery/v/AzViz.svg)](https://www.powershellgallery.com/packages/AzViz/) [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/AzViz.svg)](https://www.powershellgallery.com/packages/AzViz/) [![GitHub issues](https://img.shields.io/github/issues/PrateekKumarSingh/AzViz.svg)](https://github.com/PrateekKumarSingh/AzViz/issues) [![Documentation Status][docs-badge]][docs] [![License][license-badge]][license]
+[![PowerShell Gallery][psgallery-version-badge]][psgallery] [![PowerShell Gallery][psgallery-badge]][psgallery] [![GitHub issues][github-issues-badge]][github-issues] [![Documentation Status][docs-badge]][docs] [![License][license-badge]][license]
+
+[psgallery-version-badge]: https://img.shields.io/powershellgallery/v/AzViz.svg
+[docs-badge]: https://readthedocs.org/projects/azviz/badge/?version=latest
+[docs]: http://AzViz.readthedocs.io/en/latest/
+[psgallery-badge]: https://img.shields.io/powershellgallery/dt/AzViz.svg
+[psgallery]: https://www.powershellgallery.com/packages/AzViz
+[license-badge]: https://img.shields.io/github/license/PrateekKumarSingh/AzViz.svg
+[license]: https://www.powershellgallery.com/packages/AzViz
+[github-issues-badge]: https://img.shields.io/github/issues/PrateekKumarSingh/AzViz.svg
+[github-issues]: https://github.com/PrateekKumarSingh/AzViz/issues
 
 Azure Visualizer aka 'AzViz' - PowerShell module to automatically generate Azure resource topology diagrams by just typing a PowerShell cmdlet and passing the name of one or more Azure Resource Group(s).
 
