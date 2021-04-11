@@ -12,6 +12,14 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  pester-test:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: perform a pester tests
+      shell: pwsh
+      run: |
+        Invoke-Pester
   publish:
     if: contains(github.event.head_commit.message, 'publish to gallery')
     runs-on: windows-latest
