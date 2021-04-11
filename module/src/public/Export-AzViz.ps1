@@ -109,7 +109,6 @@ function Export-AzViz {
     )
         
     #region defaults
-
     try {
         $ErrorActionPreference = 'stop'
 
@@ -120,7 +119,8 @@ function Export-AzViz {
             $ASCIIArt = Get-ASCIIArt  
             $ASCIIArt += "`n   Module  : Azure Visualizer v$ModuleVersion"                       
             $ASCIIArt += "`n   Project : https://github.com/PrateekKumarSingh/AzViz`n"                       
-            Write-Host $ASCIIArt
+            Write-Verbose $ASCIIArt
+            Write-Verbose ""
             
         }
 
@@ -401,7 +401,11 @@ function Export-AzViz {
 strict $graph
 "@ | Export-PSGraph -ShowGraph:$Show -OutputFormat $OutputFormat -DestinationPath $OutputFilePath -OutVariable output |
             Out-Null
-            Write-Verbose "Graph Exported to path: $($output.fullname)"
+            Write-Verbose "Visualization exported to path: $($output.fullname)"
+
+            if(!$PSBoundParameters.ContainsKey('Verbose')){
+                Write-Host "`nVisualization exported to path: $($output.fullname)`n"
+            }
             Write-Verbose "Finished Azure visualization."
         }
         #endregion graph-generation

@@ -1,0 +1,7 @@
+site_name: AzViz Docs
+repo_url: https://github.com/PrateekKumarSingh/AzViz
+theme: readthedocs
+nav:
+  - Home: index.md
+  - Guides:
+    - Quickstart: guides/quickstart.md

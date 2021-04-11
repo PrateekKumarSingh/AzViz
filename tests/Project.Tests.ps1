@@ -1,11 +1,11 @@
 $projectRoot = Resolve-Path (Split-Path  $PSScriptRoot -Parent)
-$moduleRoot = Join-Path $projectRoot ([System.IO.Path]::DirectorySeparatorChar)
+$moduleRoot = Join-Path $projectRoot 'module' 
 # $moduleName = Split-Path $moduleRoot -Leaf
 
 Describe "PSScriptAnalyzer rule-sets" -Tag Build {
     $Rules = Get-ScriptAnalyzerRule -Severity Error
     $ExcludedRules = 'PSAvoidUsingEmptyCatchBlock', 'PSUseShouldProcessForStateChangingFunctions', 'PSAvoidUsingWriteHost', 'PSProvideCommentHelp', 'PSAvoidTrailingWhitespace'
-    $scripts = Get-ChildItem $moduleRoot -Include *.ps1, *.psm1, *.psd1 -Recurse | Where-Object fullname -notmatch 'classes'
+    $scripts = Get-ChildItem $moduleRoot -Include *.ps1, *.psm1, *.psd1 -Recurse | Where-Object fullname -match 'src'
 
     foreach ( $Script in $scripts ) {
         $results = Invoke-ScriptAnalyzer -Path $script.FullName -includeRule $Rules -ExcludeRule $ExcludedRules
