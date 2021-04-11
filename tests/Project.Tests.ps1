@@ -13,13 +13,13 @@ Describe "PSScriptAnalyzer rule-sets" -Tag Build {
             foreach ($rule in $results) {
                 It $rule.RuleName {
                     $message = "{0} Line {1}: {2}" -f $rule.Severity, $rule.Line, $rule.message
-                    $message | Should Be ""
+                    $message | Should -Be ""
                 }
             }
         }
         else {
             It "Script '$($script.Name)' should not fail any rules" {
-                $results | Should BeNullOrEmpty
+                $results | Should -BeNullOrEmpty
             }
         }
     }
