@@ -116,20 +116,12 @@ function Export-AzViz {
         $ProjectRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
         $ModuleVersion = (Import-PowerShellDataFile (Join-Path $ProjectRoot "AzViz.psd1")).ModuleVersion
         if ($ModuleVersion) {
-            $ASCIIArt = @'
 
-  █████╗ ███████╗██╗   ██╗██╗███████╗
-  ██╔══██╗╚══███╔╝██║   ██║██║╚══███╔╝
-  ███████║  ███╔╝ ██║   ██║██║  ███╔╝ 
-  ██╔══██║ ███╔╝  ╚██╗ ██╔╝██║ ███╔╝  
-  ██║  ██║███████╗ ╚████╔╝ ██║███████╗
-  ╚═╝  ╚═╝╚══════╝  ╚═══╝  ╚═╝╚══════╝  
-  Module  : Azure Visualizer v{0}                       
-  Project : https://github.com/PrateekKumarSingh/AzViz
-
-'@ -f $ModuleVersion
-
+            $ASCIIArt = Get-ASCIIArt  
+            $ASCIIArt += "`n   Module  : Azure Visualizer v$ModuleVersion"                       
+            $ASCIIArt += "`n   Project : https://github.com/PrateekKumarSingh/AzViz`n"                       
             Write-Host $ASCIIArt
+            
         }
 
         Write-Verbose "Testing Graphviz installation..."
