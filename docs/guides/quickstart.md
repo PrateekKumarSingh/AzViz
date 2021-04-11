@@ -17,7 +17,7 @@ $ sudo apt install graphviz
 
 ### Windows
 
-```PowerShell
+```bash
 # chocolatey packages Graphviz for Windows
 choco install graphviz
 
@@ -27,15 +27,15 @@ winget install graphviz
 
 ### Mac
 
-```PowerShell
+```bash
 brew install graphviz
 ```
 
-## Installation 
+## Installation
 
 ### From PowerShell Gallery
 
-```PowerShell
+```Bash
 # install from powershell gallery
 Install-Module AzViz -Verbose -Scope CurrentUser -Force
 
@@ -48,10 +48,10 @@ Connect-AzAccount
 
 ### Clone the project from GitHub
 
-```PowerShell
+```Bash
 # optionally clone the project from github
 git clone https://github.com/PrateekKumarSingh/AzViz.git
-Set-Location .\AzViz\
+cd .\AzViz\
    
 # import the powershell module
 Import-Module .\AzViz.psm1 -Verbose

@@ -117,8 +117,9 @@ function Export-AzViz {
         if ($ModuleVersion) {
 
             $ASCIIArt = Get-ASCIIArt  
-            $ASCIIArt += "`n   Module  : Azure Visualizer v$ModuleVersion"                       
-            $ASCIIArt += "`n   Project : https://github.com/PrateekKumarSingh/AzViz`n"                       
+            $ASCIIArt += "`n   Module   : Azure Visualizer v$ModuleVersion"                       
+            $ASCIIArt += "`n   Github   : https://github.com/PrateekKumarSingh/AzViz"                       
+            $ASCIIArt += "`n   Document : https://azviz.readthedocs.io/`n"                       
             Write-Verbose $ASCIIArt
             Write-Verbose ""
             
