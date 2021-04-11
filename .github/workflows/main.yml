@@ -25,5 +25,7 @@ jobs:
         Get-ChildItem -Path env:
         Write-Host 'Publishing module to PowerShell Gallery'
         Get-Location
+        Set-Location ./module/
+        Get-ChildItem
         Publish-Module -Path AzViz -NuGetApiKey $env:NuGetApiKey -Verbose
         Write-Host 'Finished publishing module to PowerShell Gallery'
