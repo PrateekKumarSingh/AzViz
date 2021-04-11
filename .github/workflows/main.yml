@@ -14,7 +14,7 @@ on:
 jobs:
   publish:
     if: contains(github.event.head_commit.message, 'publish to gallery')
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
     - name: publish to powershell gallery
@@ -24,6 +24,7 @@ jobs:
       run: |
         Get-ChildItem -Path env:
         Write-Host 'Publishing module to PowerShell Gallery'
-        Set-Location ./module/
+        Set-Location .\module\
+        Get-ChildItem | % Fullname
         Publish-Module -Path . -NuGetApiKey $env:NuGetApiKey -Verbose
         Write-Host 'Finished publishing module to PowerShell Gallery'
