@@ -1,4 +1,4 @@
-# ⚡ Azure Visualizer, aka 'AzViz' ⚡
+# ⚡ Azure Visualizer, aka 'AzViz' 
 
 [![PowerShell Gallery][psgallery-version-badge]][psgallery] [![PowerShell Gallery][psgallery-badge]][psgallery] [![GitHub issues][github-issues-badge]][github-issues] [![CI][github-action-ci-badge]][github-action-ci] [![Documentation Status][docs-badge]][docs] [![License][license-badge]][license]
 
