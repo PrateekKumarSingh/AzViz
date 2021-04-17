@@ -103,27 +103,27 @@ Connect-AzAccount
 
 ```PowerShell
 # target single resource group
-Export-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -Show
+Export-AzViz -ResourceGroup demo-2 -Theme light -Verbose -OutputFormat png -Show
 ```
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/SingleResourceGroup.png)
 ### Target Single Resource Group with more sub-categories
 
 ```PowerShell
 # target single resource group with more sub-categories
-Export-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -Show -CategoryDepth 2
+Export-AzViz -ResourceGroup demo-2 -Theme light -Verbose -OutputFormat png -Show -CategoryDepth 2
 ```
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/SingleResourceGroupSubCategories.png)
 ### Target Multiple Resource Groups
 
 ```PowerShell
 # target multiple resource groups
-Export-AzViz -ResourceGroups demo-2, demo-3 -LabelVerbosity 1 -CategoryDepth 1 -Theme light -Verbose -Show -OutputFormat png
+Export-AzViz -ResourceGroup demo-2, demo-3 -LabelVerbosity 1 -CategoryDepth 1 -Theme light -Verbose -Show -OutputFormat png
 ```
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/MultipleResourceGroups.png)
 ### Add Verbosity to Resource Label
 
 ```PowerShell
 # adding more information in resource label like: Name, type, Provider etc
-Export-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -Show -LabelVerbosity 2
+Export-AzViz -ResourceGroup demo-2 -Theme light -Verbose -OutputFormat png -Show -LabelVerbosity 2
 ```
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/LabelVerbosity.png)

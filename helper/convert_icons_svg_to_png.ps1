@@ -11,10 +11,10 @@ foreach ($filename in $Files) {
         $filename=$filename.fullname
         $base = Split-Path $filename
         $leaf = (Split-Path $filename -Leaf).replace('.svg','.png').replace(' ','')
-        $targetName = Join-Path $base $leaf
+        $TargetName = Join-Path $base $leaf
  
         $command = "& `"$exec`" --export-type='png' `"$filename`"";  
-        # $command = "& `"$exec`" -z -e `"$targetName`" -w 64 `"$filename`"";
+        # $command = "& `"$exec`" -z -e `"$TargetName`" -w 64 `"$filename`"";
         Invoke-Expression $command; 
     } 
 } 

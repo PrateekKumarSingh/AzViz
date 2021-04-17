@@ -5,11 +5,11 @@ Get-Childitem $Path -Filter *.ps1 -Recurse | Foreach-Object {
 }
 
 # verify dependent modules are loaded
-$DependentModules = 'PSGraph', 'az'
-$Installed = Import-Module $DependentModules -PassThru -ErrorAction SilentlyContinue | Where-Object { $_.name -In $DependentModules }
-$Missing = $DependentModules | Where-Object { $_ -notin $Installed.name }
-if ($Missing) {
-    Write-Verbose "    [+] Module dependencies not found [$Missing]. Attempting to install."
-    Install-Module $Missing -Force -AllowClobber -Confirm:$false -Scope CurrentUser
-    Import-Module $Missing
-}
+# $DependentModules = 'PSGraph', 'Az.Accounts', 'Az.Resources'
+# $Installed = Import-Module $DependentModules -PassThru -ErrorAction SilentlyContinue | Where-Object { $_.name -In $DependentModules }
+# $Missing = $DependentModules | Where-Object { $_ -notin $Installed.name }
+# if ($Missing) {
+#     Write-Verbose "    [+] Module dependencies not found [$Missing]. Attempting to install."
+#     Install-Module $Missing -Force -AllowClobber -Confirm:$false -Scope CurrentUser
+#     Import-Module $Missing
+# }

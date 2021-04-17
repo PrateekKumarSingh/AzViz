@@ -10,7 +10,7 @@ function Test-AzLogin {
         # Verify we are signed into an Azure account
         try {
             try{
-                Import-Module Az.profile -Verbose:$false   
+                Import-Module Az.Accounts -Verbose:$false   
             }
             catch {}
             Write-Verbose 'Testing Azure login'

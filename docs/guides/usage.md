@@ -4,7 +4,7 @@
 
 ```PowerShell
 # target single resource group
-Export-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -Show
+Export-AzViz -ResourceGroup demo-2 -Theme light -Verbose -OutputFormat png -Show
 ```
 ![](https://raw.githubusercontent.com/PrateekKumarSingh/AzViz/master/img/SingleResourceGroup.png)
 
@@ -12,7 +12,7 @@ Export-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -Sho
 
 ```PowerShell
 # target single resource group with more sub-categories
-Export-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -Show -CategoryDepth 2
+Export-AzViz -ResourceGroup demo-2 -Theme light -Verbose -OutputFormat png -Show -CategoryDepth 2
 ```
 ![](https://raw.githubusercontent.com/PrateekKumarSingh/AzViz/master/img/SingleResourceGroupSubCategories.png)
 
@@ -20,7 +20,7 @@ Export-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -Sho
 
 ```PowerShell
 # target multiple resource groups
-Export-AzViz -ResourceGroups demo-2, demo-3 -LabelVerbosity 1 -CategoryDepth 1 -Theme light -Verbose -Show -OutputFormat png
+Export-AzViz -ResourceGroup demo-2, demo-3 -LabelVerbosity 1 -CategoryDepth 1 -Theme light -Verbose -Show -OutputFormat png
 ```
 
 ![](https://raw.githubusercontent.com/PrateekKumarSingh/AzViz/master/img/MultipleResourceGroups.png)
@@ -29,7 +29,7 @@ Export-AzViz -ResourceGroups demo-2, demo-3 -LabelVerbosity 1 -CategoryDepth 1 -
 
 ```PowerShell
 # adding more information in resource label like: Name, type, Provider etc
-Export-AzViz -ResourceGroups demo-2 -Theme light -Verbose -OutputFormat png -Show -LabelVerbosity 2
+Export-AzViz -ResourceGroup demo-2 -Theme light -Verbose -OutputFormat png -Show -LabelVerbosity 2
 ```
 
 ![](https://raw.githubusercontent.com/PrateekKumarSingh/AzViz/master/img/LabelVerbosity.png)
