@@ -16,6 +16,16 @@ function ConvertFrom-ARM {
             "Microsoft.Network/networkInterfaces"     = 5
             "Microsoft.Compute/virtualMachines"       = 6
         }
+
+        $Excluded_ARMObjects = $(
+            "Microsoft.Network/virtualNetworks*",
+            "Microsoft.Network/virtualNetworks/subnets*",
+            "Microsoft.Network/networkSecurityGroups*"
+        )
+
+        # $scriptblock = [scriptblock]::Create($Excluded_ARMObjects.ForEach({'$_.type -NotLike "{0}"' -f $_}) -join ' -and ')
+        $scriptblock = [scriptblock]::Create($Excluded_ARMObjects.ForEach({'$_.fromcateg -NotLike "{0}" -and $_.tocateg -NotLike "{0}"' -f $_}) -join ' -and ')
+        
     }
     
     process {
@@ -26,9 +36,6 @@ function ConvertFrom-ARM {
             #region obtaining-arm-template
             switch ($TargetType) {
                 'Azure Resource Group' { 
-                    if (!(Test-AzLogin)) {
-                        break
-                    }
                     Write-Verbose " [+] Exporting ARM template of Azure Resource group: `"$Target`""
                     $template = (Export-AzResourceGroup -ResourceGroupName $Target -SkipAllParameterization -Force -Path $temp_armtemplate).Path
                 }
@@ -48,7 +55,7 @@ function ConvertFrom-ARM {
             Write-Verbose " [+] Processing the ARM template to extract resources"
 
             $arm = Get-Content -Path $template | ConvertFrom-Json
-            $resources = $arm.Resources
+            $resources = $arm.Resources | Where-Object $scriptblock
 
             if ($resources) {
                 Write-Verbose " [+] Total resources found: $($resources.count)"
@@ -102,7 +109,7 @@ function ConvertFrom-ARM {
             [PSCustomObject]@{
                 Type      = $TargetType
                 Name      = $Target
-                Resources = $data
+                Resources = $data | Where-Object $scriptblock
             }
         }
     }

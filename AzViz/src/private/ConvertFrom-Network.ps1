@@ -16,6 +16,15 @@ function ConvertFrom-Network {
             "Microsoft.Network/networkInterfaces"     = 5
             "Microsoft.Compute/virtualMachines"       = 6
         }
+
+        # $Excluded_NetworkObjects = $("Microsoft.Network/virtualNetworks/subnets", "Microsoft.Network/virtualNetworks")
+        $Excluded_NetworkObjects = $(
+            "*Microsoft.Network/virtualNetworks*",
+            "*Microsoft.Network/virtualNetworks/subnets*",
+            "*Microsoft.Network/networkSecurityGroups*"
+        )
+        
+        $scriptblock = [scriptblock]::Create($Excluded_NetworkObjects.ForEach({'$_.fromcateg -NotLike "{0}" -and $_.tocateg -NotLike "{0}"' -f $_}) -join ' -and ')
     }
     
     process {
@@ -24,10 +33,6 @@ function ConvertFrom-Network {
 
             switch ($TargetType) {
                 'Azure Resource Group' { 
-                    if (!(Test-AzLogin)) {
-                        break
-                    }
-
                     $ResourceGroup = $Target
                     Write-Verbose " [+] Exporting Network Associations from Network watcher for Resource Group: `"$Target`""
                     $location = Get-AzResourceGroup -Name $ResourceGroup | ForEach-Object location
@@ -48,16 +53,14 @@ function ConvertFrom-Network {
                 Write-Verbose " [+] Fetching network topology of resource group: `"$ResourceGroup`""
                 $Topology = Get-AzNetworkWatcherTopology -NetworkWatcher $networkWatcher -TargetResourceGroupName $ResourceGroup -Verbose  
                 
-                $resources = $Topology.Resources
+                $resources = $Topology.Resources #| Where-Object $scriptblock
                 #endregion obtaining-network-associations
     
                 #region parsing-network-topology-and-finding-associations
                 $data = @()
                 $data += $Resources | 
-                Select-Object @{n = 'from'; e = { $_.name } }, 
-                @{n = 'fromcateg'; e = { (Get-AzResource -ResourceId $_.id).ResourceType } },
-                Associations, 
-                @{n = 'to'; e = { ($_.AssociationText | ConvertFrom-Json) | Select-Object name, AssociationType, resourceID } } |
+                Select-Object @{n = 'from'; e = { $_.name } }, @{n = 'fromcateg'; e = { (Get-AzResource -ResourceId $_.id -ea SilentlyContinue).ResourceType } }, Associations, @{n = 'to'; e = { ($_.AssociationText | ConvertFrom-Json) | Select-Object name, AssociationType, resourceID } } |
+                Where-Object { $_.fromcateg.split("/").count -le $($CategoryDepth + 1) } |
                 ForEach-Object {
                     if ($_.to) {
                         Foreach ($to in $_.to) {
@@ -74,7 +77,7 @@ function ConvertFrom-Network {
                         }
                     }
                     else {
-                        $fromcateg = $_.FromCategory
+                        $fromcateg = $_.FromCateg
                         [PSCustomObject]@{
                             fromcateg   = $fromCateg
                             from        = $_.from
@@ -90,7 +93,7 @@ function ConvertFrom-Network {
                 [PSCustomObject]@{
                     Type      = $TargetType
                     Name      = $Target
-                    Resources = $data
+                    Resources = $data | Where-Object $scriptblock
                 }
             }
             else {

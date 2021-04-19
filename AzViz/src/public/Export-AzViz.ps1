@@ -32,6 +32,9 @@ Direction in which resource groups are plotted on the visualization
 .PARAMETER OutputFilePath
 Output file path
 
+.PARAMETER Splines
+Controls how edges appear in visualization
+
 .EXAMPLE
 Visualizing a single resource group
 
@@ -118,7 +121,14 @@ function Export-AzViz {
         # [Parameter(ParameterSetName = 'FilePath')]
         # [Parameter(ParameterSetName = 'Url')]
         [ValidateScript( { Test-Path -Path $_ -IsValid })]
-        [string] $OutputFilePath = (Join-Path ([System.IO.Path]::GetTempPath()) "output.$OutputFormat")
+        [string] $OutputFilePath = (Join-Path ([System.IO.Path]::GetTempPath()) "output.$OutputFormat"),
+
+        # Controls how edges appear in visualization
+        [Parameter(ParameterSetName = 'AzLogin')]
+        # [Parameter(ParameterSetName = 'FilePath')]
+        # [Parameter(ParameterSetName = 'Url')]
+        [ValidateSet('polyline', 'curved', 'ortho', 'line', 'spline')]
+        [string] $Splines = 'spline'
     )
     
     try {
@@ -134,10 +144,17 @@ function Export-AzViz {
             $ASCIIArt += "`n   Module    : Azure Visualizer v$ModuleVersion"                       
             $ASCIIArt += "`n   Github    : https://github.com/PrateekKumarSingh/AzViz"                       
             $ASCIIArt += "`n   Document  : https://azviz.readthedocs.io/" 
-            $ASCIIArt += "`n   Questions : https://github.com/PrateekKumarSingh/AzViz/discussions/new`n" 
+            $ASCIIArt += "`n   Questions : https://github.com/PrateekKumarSingh/AzViz/discussions/new" 
+            $ASCIIArt += "`n   Author    : Prateek Singh (Twitter @singhprateik)`n" 
         
-            Write-Verbose $ASCIIArt
-            Write-Verbose ""
+            if($PSBoundParameters.ContainsKey('Verbose')){
+                Write-Verbose $ASCIIArt
+                Write-Verbose ""
+            }
+            else{
+                Write-Host $ASCIIArt
+                Write-Host ""
+            }
             
         }
 
@@ -229,7 +246,7 @@ function Export-AzViz {
         #region graph-generation
         Write-Verbose "Starting to generate Azure visualization..."
     
-        $graph = ConvertTo-DOTLanguage -TargetType $TargetType -Targets $Targets -Verbose -CategoryDepth $CategoryDepth -LabelVerbosity $LabelVerbosity
+        $graph = ConvertTo-DOTLanguage -TargetType $TargetType -Targets $Targets -Verbose -CategoryDepth $CategoryDepth -LabelVerbosity $LabelVerbosity -Splines $Splines
 
         if ($graph) {
             @"
