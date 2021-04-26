@@ -5,3 +5,4 @@ nav:
   - Home: index.md
   - Guides:
     - Quickstart: guides/quickstart.md
+    - Quickstart: guides/usage.md
