@@ -16,12 +16,17 @@ Azure Visualizer aka 'AzViz' - PowerShell module to automatically generate Azure
  * Output image can be in 'light', 'dark' or 'neon' theme.
  * Can target more than one resource group at once.
  * Change direction in which resource groups are plotted, i.e, left-to-right or top-to-bottom.
+ * Network infra and the associated resources are represented in much better way
+ * Improve network diagrams with Virtual Networks containing Subnets and resources
+ * Azure Icons with labels showing information on Subscriptions, RGs, VNet, Subnets
+ * Excluding Azure resource types/providers
+ * Supports empty virtual networks
+ * Improved dark and neon themes
+ * Supports diagram legends
  
 ![](https://raw.githubusercontent.com/PrateekKumarSingh/AzViz/master/img/themeneon.jpg)
 
 ![](https://raw.githubusercontent.com/PrateekKumarSingh/AzViz/master/img/themedark.jpg)
-
-
 
 ## Demo Video
 
