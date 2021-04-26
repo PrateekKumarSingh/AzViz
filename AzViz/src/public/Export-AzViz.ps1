@@ -128,37 +128,28 @@ function Export-AzViz {
         # [Parameter(ParameterSetName = 'FilePath')]
         # [Parameter(ParameterSetName = 'Url')]
         [ValidateSet('polyline', 'curved', 'ortho', 'line', 'spline')]
-        [string] $Splines = 'spline'
+        [string] $Splines = 'spline',
+
+        # type of resources to be excluded in the visualization
+        [Parameter(ParameterSetName = 'AzLogin')]
+        # [Parameter(ParameterSetName = 'FilePath')]
+        # [Parameter(ParameterSetName = 'Url')]
+        [ValidateNotNullOrEmpty()]
+        [string[]] $ExcludeTypes
     )
-    
+
+
     try {
+
+        $StartTime =  [datetime]::Now
 
         #region defaults
         $ErrorActionPreference = 'stop'
 
-        $ProjectRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-        $ModuleVersion = (Import-PowerShellDataFile (Join-Path $ProjectRoot "AzViz.psd1")).ModuleVersion
-        if ($ModuleVersion) {
+        Get-ASCIIArt             
 
-            $ASCIIArt = Get-ASCIIArt  
-            $ASCIIArt += "`n   Module    : Azure Visualizer v$ModuleVersion"                       
-            $ASCIIArt += "`n   Github    : https://github.com/PrateekKumarSingh/AzViz"                       
-            $ASCIIArt += "`n   Document  : https://azviz.readthedocs.io/" 
-            $ASCIIArt += "`n   Questions : https://github.com/PrateekKumarSingh/AzViz/discussions/new" 
-            $ASCIIArt += "`n   Author    : Prateek Singh (Twitter @singhprateik)`n" 
-        
-            if($PSBoundParameters.ContainsKey('Verbose')){
-                Write-Verbose $ASCIIArt
-                Write-Verbose ""
-            }
-            else{
-                Write-Host $ASCIIArt
-                Write-Host ""
-            }
-            
-        }
-
-        Write-Verbose "Testing Graphviz installation..."
+        Write-Host ""
+        Write-CustomHost "Testing Graphviz installation..." -Indentation 0 -color Magenta -AddTime
 
         # test graphviz installation
 
@@ -168,38 +159,58 @@ function Export-AzViz {
             Write-Error "'GraphViz' is not installed on this system and is a prerequisites for this module to work. Please download and install from here: https://graphviz.org/download/ and re-run this command." -ErrorAction Stop
         }
         else {
-            Write-Verbose " [+] GraphViz installation path : $GraphViz"
+            Write-CustomHost "GraphViz installation path : $GraphViz" -Indentation 1 -color Green
         }
 
         switch ($Theme) {
             'light' { 
-                $GraphColor = 'White'
-                $SubGraphColor = 'Black'
-                $GraphFontColor = 'Black'
-                $EdgeColor = 'Black'
-                $EdgeFontColor = 'Black'
-                $NodeColor = 'Black'
-                $NodeFontColor = 'Black'
+                $VisualizationGraphColor = 'White'
+                $MainGraphBGColor = 'ivory1'
+                $ResourceGroupGraphColor = 'black'
+                $ResourceGroupGraphBGColor = 'ghostwhite'
+                $VNetGraphColor = 'mintcream'
+                $SubnetGraphBGColor = 'whitesmoke'
+                $SubnetGraphColor = 'black'
+                $GraphFontColor = 'black'
+                $DependencyEdgeColor = 'lightslategrey'
+                $NetworkEdgeColor = 'royalblue2'
+                $EdgeFontColor = 'black'
+                $NodeColor = 'black'
+                $NodeFontColor = 'black'
                 break
             }
             'dark' { 
-                $GraphColor = 'Black'
-                $SubGraphColor = 'White'
-                $GraphFontColor = 'White'
-                $EdgeColor = 'White'
-                $EdgeFontColor = 'White'
-                $NodeColor = 'White'
-                $NodeFontColor = 'White'
+                $VisualizationGraphColor = 'White'
+                $MainGraphBGColor = 'Black'
+                $ResourceGroupGraphColor = 'white'
+                $ResourceGroupGraphBGColor = 'grey7'
+                $VNetGraphColor = 'white'
+                $VNetGraphBGColor = 'grey15'
+                $SubnetGraphColor = 'white'
+                $SubnetGraphBGColor = 'grey23'
+                $GraphFontColor = 'white'
+                $DependencyEdgeColor = 'lightslategrey'
+                $NetworkEdgeColor = 'royalblue2'
+                $EdgeFontColor = 'white'
+                $NodeColor = 'white'
+                $NodeFontColor = 'white'
                 break
             }
             'neon' {
-                $GraphColor = 'Black'
-                $SubGraphColor = 'YellowGreen'
-                $GraphFontColor = 'YellowGreen'
-                $EdgeColor = 'YellowGreen'
-                $EdgeFontColor = 'YellowGreen'
-                $NodeColor = 'YellowGreen'
-                $NodeFontColor = 'YellowGreen'
+                $VisualizationGraphColor = 'White'
+                $MainGraphBGColor = 'grey14'
+                $ResourceGroupGraphColor = 'white'
+                $ResourceGroupGraphBGColor = 'midnightblue'
+                $VNetGraphColor = 'white'
+                $VNetGraphBGColor = 'darkslategray'
+                $SubnetGraphColor = 'white'
+                $SubnetGraphBGColor = 'maroon4'
+                $GraphFontColor = 'gold2'
+                $DependencyEdgeColor = 'olivedrab1'
+                $NetworkEdgeColor = 'lightpink2'
+                $EdgeFontColor = 'gold2'
+                $NodeColor = 'gold2'
+                $NodeFontColor = 'gold2'
                 break
             }
         }
@@ -223,15 +234,16 @@ function Export-AzViz {
             "Microsoft.Compute/virtualMachines"       = 6
         }
 
-        Write-Verbose "Configuring Defaults..."
-        Write-Verbose " [+] Target Type          : $TargetType"
-        Write-Verbose " [+] Output Format        : $OutputFormat"
-        Write-Verbose " [+] Output File Path     : $OutputFilePath"
-        Write-Verbose " [+] Label Verbosity      : $LabelVerbosity"
-        Write-Verbose " [+] Category Depth       : $CategoryDepth"
-        Write-Verbose " [+] Sub-graph Direction  : $Direction"
-        Write-Verbose " [+] Theme                : $Theme"
-        Write-Verbose " [+] Launch Visualization : $Show"
+        Write-CustomHost "Configuring Defaults..." -Indentation 0 -color Magenta -AddTime
+        Write-CustomHost " Target Type            : $TargetType"-Indentation 1 -color Green
+        Write-CustomHost " Output Format          : $OutputFormat"-Indentation 1 -color Green
+        Write-CustomHost " Exluded Resource Types : $($ExcludeTypes.foreach({"`'$_`'"}))"-Indentation 1 -color Green
+        Write-CustomHost " Output File Path       : $OutputFilePath"-Indentation 1 -color Green
+        Write-CustomHost " Label Verbosity        : $LabelVerbosity"-Indentation 1 -color Green
+        Write-CustomHost " Category Depth         : $CategoryDepth"-Indentation 1 -color Green
+        Write-CustomHost " Sub-graph Direction    : $Direction"-Indentation 1 -color Green
+        Write-CustomHost " Theme                  : $Theme"-Indentation 1 -color Green
+        Write-CustomHost " Launch Visualization   : $Show"-Indentation 1 -color Green
         
         switch ($TargetType) {
             'Azure Resource Group' { $Targets = $ResourceGroup }
@@ -239,26 +251,22 @@ function Export-AzViz {
             'Url' { $Targets = $url }
         }
           
-        Write-Verbose "Target ${TargetType}s: "
-        $Targets.ForEach( { Write-Verbose "   > '$_'" } )
+        Write-CustomHost "Target ${TargetType}s... " -Indentation 0 -color Magenta -AddTime
+        $Targets.ForEach( { Write-CustomHost $_ -Indentation 1 -color Green } ) 
         #endregion defaults
 
         #region graph-generation
-        Write-Verbose "Starting to generate Azure visualization..."
+        Write-CustomHost "Starting to generate Azure visualization..." -Indentation 0 -color Magenta -AddTime
     
-        $graph = ConvertTo-DOTLanguage -TargetType $TargetType -Targets $Targets -Verbose -CategoryDepth $CategoryDepth -LabelVerbosity $LabelVerbosity -Splines $Splines
+        $graph = ConvertTo-DOTLanguage -TargetType $TargetType -Targets $Targets -CategoryDepth $CategoryDepth -LabelVerbosity $LabelVerbosity -Splines $Splines -ExcludeTypes $ExcludeTypes
 
         if ($graph) {
             @"
 strict $graph
 "@ | Export-PSGraph -ShowGraph:$Show -OutputFormat $OutputFormat -DestinationPath $OutputFilePath -OutVariable output |
             Out-Null
-            Write-Verbose "Visualization exported to path: $($output.fullname)"
-
-            if (!$PSBoundParameters.ContainsKey('Verbose')) {
-                Write-Host "`nVisualization exported to path: $($output.fullname)`n"
-            }
-            Write-Verbose "Finished Azure visualization."
+            Write-CustomHost "Visualization exported to path: $($output.fullname)" -Indentation 0 -color Magenta -AddTime
+            Write-CustomHost "Finished Azure visualization." -Indentation 0 -color Magenta -AddTime
         }
         #endregion graph-generation
     }

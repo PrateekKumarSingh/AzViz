@@ -4,7 +4,8 @@ function ConvertFrom-ARM {
         [string[]] $Targets,
         [ValidateSet('Azure Resource Group')]
         [string] $TargetType = 'Azure Resource Group',
-        [int] $CategoryDepth = 1
+        [int] $CategoryDepth = 1,
+        [string[]] $ExcludeTypes
     )
     
     begin {
@@ -21,30 +22,44 @@ function ConvertFrom-ARM {
             "Microsoft.Network/virtualNetworks*",
             "Microsoft.Network/virtualNetworks/subnets*",
             "Microsoft.Network/networkSecurityGroups*"
-        )
+        ) 
+        
+        if($ExcludeTypes){
+            $Excluded_ARMObjects += $ExcludeTypes
+        }
 
         # $scriptblock = [scriptblock]::Create($Excluded_ARMObjects.ForEach({'$_.type -NotLike "{0}"' -f $_}) -join ' -and ')
-        $scriptblock = [scriptblock]::Create($Excluded_ARMObjects.ForEach({'$_.fromcateg -NotLike "{0}" -and $_.tocateg -NotLike "{0}"' -f $_}) -join ' -and ')
-        
+        # $scriptblock = [scriptblock]::Create($Excluded_ARMObjects.ForEach({'$_.fromcateg -NotLike "{0}" -and $_.tocateg -NotLike "{0}"' -f $_}) -join ' -and ')
+        $scriptblock = [scriptblock]::Create( $Excluded_ARMObjects.ForEach( { '$_.fromcateg -NotLike "{0}" -and $_.tocateg -NotLike "{0}"' -f $_ }) -join ' -and ' )
     }
     
     process {
-        foreach ($Target in $Targets) {
 
-            $temp_armtemplate = (Join-Path ([System.IO.Path]::GetTempPath()) "armtemplate.json")
+        # $Targets | ForEach-Object -ThrottleLimit 10 -Parallel {
+        #     Import-Module Az.Resources
+        #     $TargetType = $using:TargetType
+        #     $CategoryDepth = $using:CategoryDepth
+        #     $Target = $_
+        #     $Rank = $using:Rank
+        #     $scriptblock = [scriptblock]::Create($using:condition)
+        
+        Foreach($Target in $Targets){
+            
+            $temp_armtemplate = New-TemporaryFile
+            # $temp_armtemplate = (Join-Path ([System.IO.Path]::GetTempPath()) "armtemplate.json")
                 
             #region obtaining-arm-template
             switch ($TargetType) {
                 'Azure Resource Group' { 
-                    Write-Verbose " [+] Exporting ARM template of Azure Resource group: `"$Target`""
-                    $template = (Export-AzResourceGroup -ResourceGroupName $Target -SkipAllParameterization -Force -Path $temp_armtemplate).Path
+                    Write-CustomHost "Exporting ARM template of Azure resource group: `'$Target`'" -Indentation 1 -color Green
+                    $template = (Export-AzResourceGroup -ResourceGroupName $Target -SkipAllParameterization -Force -Path $temp_armtemplate -WarningAction SilentlyContinue -Verbose:$false).Path
                 }
                 'File' { 
-                    Write-Verbose " [+] Accessing ARM template from local file: `"$Target`""
+                    Write-CustomHost "Accessing ARM template from local file: `'$Target`'" -Indentation 2 -color Green
                     $template = $Target
                 }
                 'Url' {
-                    Write-Verbose " [+] Downloading ARM template from URL: `"$Target`""
+                    Write-CustomHost "Downloading ARM template from URL: `'$Target`'" -Indentation 2 -color Green
                     # $Target = 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-linux/azuredeploy.json'
                     $template = $temp_armtemplate
                     Invoke-WebRequest -Uri  $Target -OutFile $template  -Verbose:$false
@@ -52,19 +67,19 @@ function ConvertFrom-ARM {
                 }
             }
 
-            Write-Verbose " [+] Processing the ARM template to extract resources"
+            Write-CustomHost "Processing the ARM template to extract resources" -Indentation 2 -color Green
 
             $arm = Get-Content -Path $template | ConvertFrom-Json
             $resources = $arm.Resources | Where-Object $scriptblock
 
             if ($resources) {
-                Write-Verbose " [+] Total resources found: $($resources.count)"
-                Write-Verbose " [+] Cleaning up temporary ARM template file at: $template"
+                Write-CustomHost "Total resources found: $($resources.count)"  -Indentation 2 -color Green
+                Write-CustomHost "Cleaning up temporary ARM template file at: $template"  -Indentation 2 -color Green
                 Remove-Item $template -Force
             }
             else {
-                Write-Verbose " [+] Total resources/sub-resources found: $($resources.count)"
-                Write-Verbose " [-] Skipping ${TargetType}: `"$Target`" as no resources were found."
+                Write-CustomHost "Total resources/sub-resources found: $($resources.count)"  -Indentation 2 -color Green
+                Write-CustomHost "Skipping ${TargetType}: `"$Target`" as no resources were found."  -Indentation 2 -color Green
                 break        
             }
             #endregion obtaining-arm-template
@@ -111,7 +126,9 @@ function ConvertFrom-ARM {
                 Name      = $Target
                 Resources = $data | Where-Object $scriptblock
             }
+
         }
+
     }
     
     end {

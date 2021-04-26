@@ -17,6 +17,7 @@ Function Get-ImageNode {
     $flag = $true
     foreach ($r in $Rows) {
         if ($flag) {
+            # Write-Verbose "   > Creating Node: $r"
             $TR += '<TR><TD align="center" colspan="2"><B><FONT POINT-SIZE="11">{0}</FONT></B></TD></TR>' -f $r
             $flag = $false
         }

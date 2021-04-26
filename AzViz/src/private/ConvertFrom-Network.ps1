@@ -4,7 +4,8 @@ function ConvertFrom-Network {
         [string[]] $Targets,
         [ValidateSet('Azure Resource Group')]
         [string] $TargetType = 'Azure Resource Group',
-        [int] $CategoryDepth = 1
+        [int] $CategoryDepth = 1,
+        [string[]] $ExcludeTypes
     )
     
     begin {
@@ -22,36 +23,48 @@ function ConvertFrom-Network {
             "*Microsoft.Network/virtualNetworks*",
             "*Microsoft.Network/virtualNetworks/subnets*",
             "*Microsoft.Network/networkSecurityGroups*"
-        )
+        ) 
+                
+        if($ExcludeTypes){
+            $Excluded_NetworkObjects += $ExcludeTypes
+        }
         
-        $scriptblock = [scriptblock]::Create($Excluded_NetworkObjects.ForEach({'$_.fromcateg -NotLike "{0}" -and $_.tocateg -NotLike "{0}"' -f $_}) -join ' -and ')
+        $scriptblock = [scriptblock]::Create( $Excluded_NetworkObjects.ForEach( { '$_.fromcateg -NotLike "{0}" -and $_.tocateg -NotLike "{0}"' -f $_ }) -join ' -and ' )
     }
     
     process {
-        foreach ($Target in $Targets) {
-                
+
+        # $Targets | ForEach-Object -ThrottleLimit 10 -Parallel {
+        #     Import-Module Az.Resources, Az.Network
+        #     $TargetType = $using:TargetType
+        #     $CategoryDepth = $using:CategoryDepth
+        #     $Target = $_
+        #     $Rank = $using:Rank
+        #     $scriptblock = [scriptblock]::Create($using:condition)
+
+        Foreach ($Target in $Targets) {
 
             switch ($TargetType) {
                 'Azure Resource Group' { 
                     $ResourceGroup = $Target
-                    Write-Verbose " [+] Exporting Network Associations from Network watcher for Resource Group: `"$Target`""
-                    $location = Get-AzResourceGroup -Name $ResourceGroup | ForEach-Object location
-                    $networkWatcher = Get-AzNetworkWatcher -Location $location -ErrorAction SilentlyContinue
+                    Write-CustomHost "Exporting network associations for resource group: `'$Target`'" -Indentation 1 -color Green
+                    $location = Get-AzResourceGroup -Name $ResourceGroup -Verbose:$false | ForEach-Object location
+                    $networkWatcher = Get-AzNetworkWatcher -Location $location -ErrorAction SilentlyContinue -Verbose:$false
                 }
                 'File' { 
-
+                    #todo
                 }
                 'Url' {
-
+                    #todo
                 }
             }
 
             if ($networkWatcher) {
-                Write-Verbose " [+] Network watcher found: `"$($networkWatcher.Name)`""
+                Write-CustomHost "Network watcher found: `'$($networkWatcher.Name)`'" -Indentation 2 -color Green
 
                 #region obtaining-network-associations           
-                Write-Verbose " [+] Fetching network topology of resource group: `"$ResourceGroup`""
-                $Topology = Get-AzNetworkWatcherTopology -NetworkWatcher $networkWatcher -TargetResourceGroupName $ResourceGroup -Verbose  
+                Write-CustomHost "Obtaining network topology using Network Watcher" -Indentation 2 -color Green
+                $Topology = Get-AzNetworkWatcherTopology -NetworkWatcher $networkWatcher -TargetResourceGroupName $ResourceGroup -Verbose:$false 
                 
                 $resources = $Topology.Resources #| Where-Object $scriptblock
                 #endregion obtaining-network-associations
@@ -59,7 +72,7 @@ function ConvertFrom-Network {
                 #region parsing-network-topology-and-finding-associations
                 $data = @()
                 $data += $Resources | 
-                Select-Object @{n = 'from'; e = { $_.name } }, @{n = 'fromcateg'; e = { (Get-AzResource -ResourceId $_.id -ea SilentlyContinue).ResourceType } }, Associations, @{n = 'to'; e = { ($_.AssociationText | ConvertFrom-Json) | Select-Object name, AssociationType, resourceID } } |
+                Select-Object @{n = 'from'; e = { $_.name } }, @{n = 'fromcateg'; e = { (Get-AzResource -ResourceId $_.id -ea SilentlyContinue -Verbose:$false).ResourceType } }, Associations, @{n = 'to'; e = { ($_.AssociationText | ConvertFrom-Json) | Select-Object name, AssociationType, resourceID } } |
                 Where-Object { $_.fromcateg.split("/").count -le $($CategoryDepth + 1) } |
                 ForEach-Object {
                     if ($_.to) {
@@ -97,7 +110,7 @@ function ConvertFrom-Network {
                 }
             }
             else {
-                Write-Verbose " [+] Network watcher not found for Resource group: `"$ResourceGroup`""
+                Write-CustomHost "Network watcher not found for resource group: `'$ResourceGroup`'" -Indentation 2 -Color Yellow
             }
  
             #endregion parsing-network-topology-and-finding-associations
