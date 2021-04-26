@@ -72,8 +72,12 @@ function ConvertFrom-Network {
                 #region parsing-network-topology-and-finding-associations
                 $data = @()
                 $data += $Resources | 
-                Select-Object @{n = 'from'; e = { $_.name } }, @{n = 'fromcateg'; e = { (Get-AzResource -ResourceId $_.id -ea SilentlyContinue -Verbose:$false).ResourceType } }, Associations, @{n = 'to'; e = { ($_.AssociationText | ConvertFrom-Json) | Select-Object name, AssociationType, resourceID } } |
-                Where-Object { $_.fromcateg.split("/").count -le $($CategoryDepth + 1) } |
+                Select-Object @{n = 'from'; e = { $_.name } },
+                              @{n = 'fromcateg'; e = { (Get-AzResource -ResourceId $_.id -ea SilentlyContinue -Verbose:$false).ResourceType } },
+                              Associations,
+                              @{n = 'to'; e = { ($_.AssociationText | ConvertFrom-Json) | Select-Object name, AssociationType, resourceID } } |
+                Select-Object *, @{n='CategDepth';e={$depth=0;try{$depth=$_.fromcateg.split("/").count}catch{};$depth}} | #todo just a hack will write better code later :)
+                Where-Object { $_.fromcateg -and ($_.CategDepth -le $($CategoryDepth + 1)) } -ea silentlycontinue |
                 ForEach-Object {
                     if ($_.to) {
                         Foreach ($to in $_.to) {
