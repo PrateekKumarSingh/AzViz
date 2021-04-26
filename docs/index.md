@@ -17,9 +17,9 @@ Azure Visualizer aka 'AzViz' - PowerShell module to automatically generate Azure
  * Can target more than one resource group at once.
  * Change direction in which resource groups are plotted, i.e, left-to-right or top-to-bottom.
  
-![](https://raw.githubusercontent.com/PrateekKumarSingh/AzViz/master/img/theme_neon.jpg)
+![](https://raw.githubusercontent.com/PrateekKumarSingh/AzViz/master/img/themeneon.jpg)
 
-![](https://raw.githubusercontent.com/PrateekKumarSingh/AzViz/master/img/theme_dark.jpg)
+![](https://raw.githubusercontent.com/PrateekKumarSingh/AzViz/master/img/themedark.jpg)
 
 
 

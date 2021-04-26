@@ -30,7 +30,7 @@ It is capable of:
  * Can target more than one resource group at once.
  * Change direction in which resource groups are plotted, i.e, left-to-right or top-to-bottom.
  
-![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/theme_neon.jpg)
+![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/themeneon.jpg)
 
 ## Demo Video - Youtube
 
