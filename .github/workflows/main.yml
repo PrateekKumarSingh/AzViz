@@ -31,7 +31,7 @@ jobs:
         NuGetApiKey: ${{ secrets.PS_GALLERY_KEY }}
       run: |
         Get-ChildItem -Path env:
-        Install-Module -Name PSGraph -Scope CurrentUser -Force
+        Install-Module -Name 'PSGraph', 'Az.Accounts', 'Az.Resources' -Scope CurrentUser -Force
         Write-Host 'Publishing module to PowerShell Gallery'
         Set-Location .\AzViz\
         Publish-Module -Path . -NuGetApiKey $env:NuGetApiKey -Verbose
