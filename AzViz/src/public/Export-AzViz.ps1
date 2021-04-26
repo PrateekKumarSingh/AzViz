@@ -33,28 +33,36 @@ Direction in which resource groups are plotted on the visualization
 Output file path
 
 .PARAMETER Splines
-Controls how edges appear in visualization
+Controls how edges appear in visualization, default is 'spline' and other supported values are 'polyline', 'curved', 'ortho', 'line'
+
+.PARAMETER ExcludeTypes
+String array of Azure resource types and providers to exclude from the visualization. 
+Can contain wild cards like: "Microsoft.Network*" or "*network*"
 
 .EXAMPLE
 Visualizing a single resource group
 
-Export-AzViz -ResourceGroup demo-2 -Theme light -Verbose -OutputFormat png -Show
+Export-AzViz -ResourceGroup demo-2 -Theme light -OutputFormat png -Show
 
 .EXAMPLE
 Visualizing a single resource group with more sub-categories
 
-Export-AzViz -ResourceGroup demo-2 -Theme light -Verbose -OutputFormat png -Show -CategoryDepth 2
+Export-AzViz -ResourceGroup demo-2 -Theme light -OutputFormat png -Show -CategoryDepth 2
 
 .EXAMPLE
 Visualizing multiple resource groups
 
-Export-AzViz -ResourceGroup demo-2, demo-3 -LabelVerbosity 1 -CategoryDepth 1 -Theme light -Verbose -Show -OutputFormat png
+Export-AzViz -ResourceGroup demo-2, demo-3 -LabelVerbosity 1 -CategoryDepth 1 -Theme light -Show -OutputFormat png
 
 .EXAMPLE
 Add more information in resource label like: Name, type, Provider etc using the '-LabelVerbosity' parameter
 
-Export-AzViz -ResourceGroup demo-2 -Theme light -Verbose -OutputFormat png -Show -LabelVerbosity 2
+Export-AzViz -ResourceGroup demo-2 -Theme light -OutputFormat png -Show -LabelVerbosity 2
 
+.EXAMPLE
+Exclude Azure resources/providers from the visualization by passing them as an argument to the '-ExcludeTypes' parameter
+
+Export-AzViz -ResourceGroup prateek -Show -ExcludeTypes "*workspace*", "Microsoft.Storage*" -Theme Neon
 .NOTES
 Github    : https://github.com/PrateekKumarSingh/azviz
 Document  : https://azviz.readthedocs.io/
