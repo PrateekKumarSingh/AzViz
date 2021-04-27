@@ -74,7 +74,7 @@ brew install graphviz
 
 ```PowerShell
 # install from powershell gallery
-Install-Module AzViz -Scope CurrentUser -Force
+Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
 
 # import the module
 Import-Module AzViz
@@ -88,7 +88,7 @@ Connect-AzAccount
 ```PowerShell
 # optionally clone the project from github
 git clone https://github.com/PrateekKumarSingh/AzViz.git
-Set-Location .\AzViz\
+Set-Location .\AzViz\AzViz
    
 # import the powershell module
 Import-Module .\AzViz.psm1 -Verbose
