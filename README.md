@@ -32,6 +32,8 @@ It is capable of:
  
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/themeneon.jpg)
 
+> Special thanks & shoutout to [`Kevin Marquette`](https://twitter.com/KevinMarquette) and his 'PSGraph' module which seeded the idea for programmatical approach to Azure Visualization while I was working with Kevin's module. And without which 'AzViz' module won't be possible! ♥👍
+
 ## Demo Video - Youtube
 
 [![Demo Video](https://img.youtube.com/vi/7rsNGJ-QmEA/0.jpg)](https://www.youtube.com/watch?v=7rsNGJ-QmEA)
