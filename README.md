@@ -32,7 +32,9 @@ It is capable of:
  
 ![](https://github.com/PrateekKumarSingh/AzViz/blob/master/img/themeneon.jpg)
 
-> Special thanks & shoutout to [`Kevin Marquette`](https://twitter.com/KevinMarquette) and his 'PSGraph' module which seeded the idea for programmatical approach to Azure Visualization while I was working with Kevin's module. And without which 'AzViz' module won't be possible! ♥👍
+## Thanks and shoutouts
+
+> Special thanks & shoutout to [`Kevin Marquette`](https://twitter.com/KevinMarquette) and his [`PSGraph`](https://www.powershellgallery.com/packages/PSGraph/2.1.38.27) module which seeded the idea for programmatical approach to Azure Visualization while I was working with Kevin's module. And without which 'AzViz' module won't be possible! ♥👍
 
 ## Demo Video - Youtube
 
