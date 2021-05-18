@@ -86,9 +86,9 @@ function ConvertFrom-Network {
                             [PSCustomObject]@{
                                 fromcateg   = $fromCateg
                                 from        = $_.from
-                                to          = $to.name
-                                toCateg     = (Get-AzResource -ResourceId $to.ResourceId).ResourceType
-                                association = $to.associationType
+                                to          = if ($to.Name -notlike "gsa-*") {$to.name} else {''}
+                                toCateg     = if ($to.Name -notlike "gsa-*") {(Get-AzResource -ResourceId $to.ResourceId).ResourceType} else {''}
+                                association = if ($to.Name -notlike "gsa-*") {$to.associationType} else {''}
                                 rank        = if ($r) { $r }else { 9999 }
                             }
                         }
