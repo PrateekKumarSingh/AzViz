@@ -218,7 +218,11 @@ function ConvertTo-DOTLanguage {
                 }
 
                 $NodesAndEdges = $nodes + $edges
+            }
 
+            if (-not ($Resources) -and -not($VNets)) {
+                Write-CustomHost -String "No resources found.. re-run the command and try increasing the category depth using -CategoryDepth 2 or -CategoryDepth 3 cmdlet parameters." -Indentation 1 -Color Red -AddTime
+            } else {
                 $ResourceGroupLocation = (Get-AzResourceGroup -Name $Target.Name -Verbose:$false).Location
                 $ResourceGroupSubGraphName = [string]::Concat($(Remove-SpecialChars -String $Target.Name -SpecialChars '() []{}&-'), $Counter)
                 $ResourceGroupSubGraphNameLabel = Get-ImageLabel -Type "ResourceGroups" -Row1 "ResourceGroup: $(Remove-SpecialChars -String $Target.name)" -Row2 "Location: $($ResourceGroupLocation)"
@@ -238,9 +242,6 @@ function ConvertTo-DOTLanguage {
                     $NodesAndEdges
                 }
 
-            }
-            else {
-                Write-CustomHost -String "No resources found.. re-run the command and try increasing the category depth using -CategoryDepth 2 or -CategoryDepth 3 cmdlet parameters." -Indentation 1 -Color Red -AddTime
             }
             #endregion plotting-edges-to-nodes
         }
