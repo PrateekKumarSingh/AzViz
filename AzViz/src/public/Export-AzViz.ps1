@@ -269,6 +269,10 @@ function Export-AzViz {
         $graph = ConvertTo-DOTLanguage -TargetType $TargetType -Targets $Targets -CategoryDepth $CategoryDepth -LabelVerbosity $LabelVerbosity -Splines $Splines -ExcludeTypes $ExcludeTypes
 
         if ($graph) {
+            # Make sure to escape spaces in filepath, as Invoke-Expression used
+            # by PSGraph does not support spaces
+            $OutputFilePath = $OutputFilePath -replace ' ', '` '
+
             @"
 strict $graph
 "@ | Export-PSGraph -ShowGraph:$Show -OutputFormat $OutputFormat -DestinationPath $OutputFilePath -OutVariable output |
