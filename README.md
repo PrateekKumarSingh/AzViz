@@ -18,6 +18,9 @@ Azure Visualizer aka 'AzViz' - PowerShell module to automatically generate Azure
 
 > _Cloud admins are not anymore doomed to manually document a cloud environment! The pain of inheriting an undocumented cloud landscape to support is gone 😎😉 so please share this project with your colleagues and friends._
 
+![Alt Text](https://giphy.com/embed/o7RZbs4KAA6tvM4H6j)
+
+
 <iframe src="https://giphy.com/embed/o7RZbs4KAA6tvM4H6j" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/buymeacoffee-buy-me-a-coffee-support-button-o7RZbs4KAA6tvM4H6j">via GIPHY</a></p>
 
 It is capable of:
