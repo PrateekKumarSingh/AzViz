@@ -1,4 +1,5 @@
 Function Get-ImageNode {
+    [CmdletBinding()]
     param(
         [string[]]$Rows,
         [string]$Type,
@@ -9,6 +10,7 @@ Function Get-ImageNode {
         [String]$FillColor = 'White'
     )
 
+    # Write-host "NAME: $Name, ROWS: $Rows, TYPE: $Type" -ForegroundColor Magenta
 
     $RootPath = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
     $IconPath = Join-Path $RootPath 'icons'

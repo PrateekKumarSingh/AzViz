@@ -5,8 +5,8 @@ function Get-TenantDiagrams {
     param (
         [Parameter(Mandatory = $true)][ValidateSet('light', 'dark', 'neon')]$theme,
         [Parameter(Mandatory = $true)][ValidateScript( { Test-Path -Path $_ -IsValid })][string] $OutputFilePath,
-        [Parameter(Mandatory = $false)][ValidateSet(1, 2, 3)][int] $LabelVerbosity = 3,
-        [Parameter(Mandatory = $false)][ValidateSet(1, 2, 3)][int] $CategoryDepth = 3,
+        [Parameter(Mandatory = $false)][ValidateSet(1, 2, 3)][int] $LabelVerbosity = 1,
+        [Parameter(Mandatory = $false)][ValidateSet(1, 2, 3)][int] $CategoryDepth = 1,
         [Parameter(Mandatory = $false)][ValidateSet('png', 'svg')][string] $OutputFormat = 'png',
         [Parameter(Mandatory = $false)][ValidateSet('left-to-right', 'top-to-bottom')][string] $Direction = 'left-to-right'
     )

@@ -80,7 +80,7 @@ function ConvertFrom-ARM {
             else {
                 Write-CustomHost "Total resources/sub-resources found: $($resources.count)"  -Indentation 2 -color Green
                 Write-CustomHost "Skipping ${TargetType}: `"$Target`" as no resources were found."  -Indentation 2 -color Green
-                break        
+                continue        
             }
             #endregion obtaining-arm-template
 
