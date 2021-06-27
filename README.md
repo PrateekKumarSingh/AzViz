@@ -136,10 +136,12 @@ Export-AzViz -ResourceGroup demo-2 -Theme light -OutputFormat png -Show -LabelVe
 ## Change Log
 
 ### v1.2.0
-- handled condition to skip resources out of resource group, this should fix #37 and #39 
-- handled period in resource group name, this should fix #41
+- Handled condition to skip resources out of resource group, this should fix #37 and #39 
+- Handled period in resource group name, this should fix #41
 - If there are no edges between the nodes, then graph legends are not plotted, this should fix #38 
-- empty resource groups skips, resource visualization for all later targets, this should fix #50 
+- Empty resource groups skips, resource visualization for all later targets, this should fix #50. Thanks [@madsaune](https://github.com/madsaune) finding the bug and creating the issue [issue#50](https://github.com/PrateekKumarSingh/AzViz/issues/50)
+- Add Vnet-only resource groups to graph visualization. Special thanks to [@madsaune](https://github.com/madsaune) for the [pull-request](https://github.com/PrateekKumarSingh/AzViz/pull/52)
+
 ### v1.1.2
 - Network infra and the associated resources are represented in much better way 
 - Improve network diagrams with Virtual Networks containing Subnets and resources
