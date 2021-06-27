@@ -48,3 +48,20 @@ and using Network watcher to find associations. Which also provides the network 
 Support visualization from ARM templates passed as an URL or a local File - Work in progress!.
 
 * **Infrastructure DIFF!** yeah, you heard it right this is going to be my favorite feature to implement. This will give us the **ability to identify/detect what has changed in Azure infrastructure**, for example, a resource has been deleted, or IPAddress has been changed something like that.
+
+## Change Log
+
+### v1.2.0
+- handled condition to skip resources out of resource group, this should fix #37 and #39 
+- handled period in resource group name, this should fix #41
+- If there are no edges between the nodes, then graph legends are not plotted, this should fix #38 
+- empty resource groups skips, resource visualization for all later targets, this should fix #50 
+### v1.1.2
+- Network infra and the associated resources are represented in much better way 
+- Improve network diagrams with Virtual Networks containing Subnets and resources
+- Azure Icons with labels showing informarion on Subscriptions, RGs, VNet, Subnets
+- Excluding Azure resource types/providers
+- Supports empty virtual networks
+- Improved dark and neon themes
+- Supports diagram legends
+- Bug Fixes
