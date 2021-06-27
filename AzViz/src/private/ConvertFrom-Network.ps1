@@ -70,6 +70,7 @@ function ConvertFrom-Network {
                 #endregion obtaining-network-associations
     
                 #region parsing-network-topology-and-finding-associations
+                $SkipMsgFlag = $true
                 $data = @()
                 $data += $Resources | 
                 Select-Object @{n = 'from'; e = { $_.name } },
@@ -81,15 +82,26 @@ function ConvertFrom-Network {
                 ForEach-Object {
                     if ($_.to) {
                         Foreach ($to in $_.to) {
-                            $fromcateg = $_.FromCateg
-                            $r = $rank[$fromcateg]
-                            [PSCustomObject]@{
-                                fromcateg   = $fromCateg
-                                from        = $_.from
-                                to          = $to.name
-                                toCateg     = (Get-AzResource -ResourceId $to.ResourceId).ResourceType
-                                association = $to.associationType
-                                rank        = if ($r) { $r }else { 9999 }
+                            # todo: only allow network connections within the resource group to be included
+                            # as the module evolves, need to figure out a way to visualize network connections outside resource group
+                            if($to.ResourceID -like "*$ResourceGroup*"){
+                                $fromcateg = $_.FromCateg
+                                $r = $rank[$fromcateg]
+                                [PSCustomObject]@{
+                                    fromcateg   = $fromCateg
+                                    from        = $_.from
+                                    to          = $to.name
+                                    toCateg     = (Get-AzResource -ResourceId $to.ResourceId -ErrorAction SilentlyContinue).ResourceType
+                                    association = $to.associationType
+                                    rank        = if ($r) { $r }else { 9999 }
+                                }
+                            }
+                            else{
+                                if($SkipMsgFlag){
+                                    Write-CustomHost "Skipping network resources outside the resource group '$ResourceGroup'" -Indentation 3 -color Yellow
+                                    $skipMsgFlag = $false
+                                }
+                                Write-CustomHost "$($to.ResourceID)" -Indentation 4 -color Yellow
                             }
                         }
                     }

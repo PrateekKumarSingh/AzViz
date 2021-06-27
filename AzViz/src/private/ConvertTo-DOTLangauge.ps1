@@ -24,6 +24,7 @@ function ConvertTo-DOTLanguage {
             break
         }
         
+        $SpecialChars = '() []{}&-.'
         $GraphObjects = @()
         $NetworkObjects = ConvertFrom-Network -TargetType $TargetType -Targets $Targets -CategoryDepth $CategoryDepth -ExcludeTypes $ExcludeTypes
         $GraphObjects += $NetworkObjects
@@ -62,7 +63,7 @@ function ConvertTo-DOTLanguage {
                     $VNetCounter = $VNetCounter + 1
 
                     $VNetLabel = Get-ImageLabel -Type "Microsoft.Network/virtualNetworks" -Row1 "$($VNet.Name)" -Row2 "$([string]$VNet.AddressSpace.AddressPrefixes)"
-                    $VNetSubGraphName = Remove-SpecialChars -String $VNet.Name -SpecialChars '() []{}&-'
+                    $VNetSubGraphName = Remove-SpecialChars -String $VNet.Name -SpecialChars $SpecialChars
                     $VNetSubGraphAttributes = @{
                         label    = $VNetLabel;
                         labelloc = 't';
@@ -85,7 +86,7 @@ function ConvertTo-DOTLanguage {
                         foreach ($subnet in $Subnets) {
     
                             $SubnetLabel = Get-ImageLabel -Type "Subnets" -Row1 "$($Subnet.Name)" -Row2 "$([string]$Subnet.AddressPrefix)"
-                            $SubnetSubGraphName = Remove-SpecialChars -String $Subnet.Name -SpecialChars '() []{}&-'
+                            $SubnetSubGraphName = Remove-SpecialChars -String $Subnet.Name -SpecialChars $SpecialChars
                             $SubnetSubGraphAttributes = @{
                                 label    = $SubnetLabel;
                                 labelloc = 't';
@@ -153,12 +154,12 @@ function ConvertTo-DOTLanguage {
                                         }
     
                         if ($LabelVerbosity -eq 1) {
-                            $nodes += Get-ImageNode -Name "$fromcateg/$from".tolower() -Rows $from -Type $fromcateg   
-                            $nodes += Get-ImageNode -Name "$tocateg/$to".tolower() -Rows $to -Type $tocateg
+                            $nodes += Get-ImageNode -Name "$fromcateg/$from".tolower() -Rows $from -Type $fromcateg -ErrorAction SilentlyContinue
+                            $nodes += Get-ImageNode -Name "$tocateg/$to".tolower() -Rows $to -Type $tocateg -ErrorAction SilentlyContinue
                         }
                         elseif ($LabelVerbosity -eq 2) {
-                            $nodes += Get-ImageNode -Name "$fromcateg/$from".tolower() -Rows ($from, $fromcateg) -Type $fromcateg
-                            $nodes += Get-ImageNode -Name "$tocateg/$to".tolower() -Rows ($to, $toCateg) -Type $tocateg   
+                            $nodes += Get-ImageNode -Name "$fromcateg/$from".tolower() -Rows ($from, $fromcateg) -Type $fromcateg -ErrorAction SilentlyContinue
+                            $nodes += Get-ImageNode -Name "$tocateg/$to".tolower() -Rows ($to, $toCateg) -Type $tocateg -ErrorAction SilentlyContinue
                         }
                     }
                     if ($_.association) {
@@ -173,20 +174,20 @@ function ConvertTo-DOTLanguage {
                         }
     
                         if ($LabelVerbosity -eq 1) {
-                            $nodes += Get-ImageNode -Name "$fromcateg/$from".tolower() -Rows $from -Type $fromcateg   
-                            $nodes += Get-ImageNode -Name "$tocateg/$to".tolower() -Rows $to -Type $tocateg
+                            $nodes += Get-ImageNode -Name "$fromcateg/$from".tolower() -Rows $from -Type $fromcateg -ErrorAction SilentlyContinue
+                            $nodes += Get-ImageNode -Name "$tocateg/$to".tolower() -Rows $to -Type $tocateg -ErrorAction SilentlyContinue
                         }
                         elseif ($LabelVerbosity -eq 2) {
-                            $nodes += Get-ImageNode -Name "$fromcateg/$from".tolower() -Rows ($from, $fromcateg) -Type $fromcateg
-                            $nodes += Get-ImageNode -Name "$tocateg/$to".tolower() -Rows ($to, $toCateg) -Type $tocateg   
+                            $nodes += Get-ImageNode -Name "$fromcateg/$from".tolower() -Rows ($from, $fromcateg) -Type $fromcateg -ErrorAction SilentlyContinue
+                            $nodes += Get-ImageNode -Name "$tocateg/$to".tolower() -Rows ($to, $toCateg) -Type $tocateg -ErrorAction SilentlyContinue
                         }
                     }
                     else {
                         if ($LabelVerbosity -eq 1) {
-                            $nodes += Get-ImageNode -Name "$fromcateg/$from".tolower() -Rows $from -Type $fromcateg   
+                            $nodes += Get-ImageNode -Name "$fromcateg/$from".tolower() -Rows $from -Type $fromcateg -ErrorAction SilentlyContinue
                         }
                         elseif ($LabelVerbosity -eq 2) {
-                            $nodes += Get-ImageNode -Name "$fromcateg/$from".tolower() -Rows ($from, $fromcateg) -Type $fromcateg
+                            $nodes += Get-ImageNode -Name "$fromcateg/$from".tolower() -Rows ($from, $fromcateg) -Type $fromcateg -ErrorAction SilentlyContinue
                         }
                     }
                 } | 
@@ -222,8 +223,8 @@ function ConvertTo-DOTLanguage {
 
             if ($Resources -or $VNets) {
                 $ResourceGroupLocation = (Get-AzResourceGroup -Name $Target.Name -Verbose:$false).Location
-                $ResourceGroupSubGraphName = [string]::Concat($(Remove-SpecialChars -String $Target.Name -SpecialChars '() []{}&-'), $Counter)
-                $ResourceGroupSubGraphNameLabel = Get-ImageLabel -Type "ResourceGroups" -Row1 "ResourceGroup: $(Remove-SpecialChars -String $Target.name)" -Row2 "Location: $($ResourceGroupLocation)"
+                $ResourceGroupSubGraphName = [string]::Concat($(Remove-SpecialChars -String $Target.Name -SpecialChars $SpecialChars), $Counter)
+                $ResourceGroupSubGraphNameLabel = Get-ImageLabel -Type "ResourceGroups" -Row1 "ResourceGroup: $(Remove-SpecialChars -String $Target.name -SpecialChars $SpecialChars)" -Row2 "Location: $($ResourceGroupLocation)"
                 $ResourceGroupSubGraphAttributes = @{
                     label    = $ResourceGroupSubGraphNameLabel;
                     labelloc = 't';
@@ -283,7 +284,7 @@ function ConvertTo-DOTLanguage {
 
             $graph = Graph -Name 'Visualization' -Attributes $VisualizationAttributes -ScriptBlock {
                 
-                $MainGraphLabel = Get-ImageLabel -Type "Subscriptions" -Row1 "Subscription: $(Remove-SpecialChars -String $Subscription.name)" -Row2 "Id: $($Subscription.Id)"
+                $MainGraphLabel = Get-ImageLabel -Type "Subscriptions" -Row1 "Subscription: $(Remove-SpecialChars -String $Subscription.name -SpecialChars $SpecialChars)" -Row2 "Id: $($Subscription.Id)"
                 $MainGraphAttributes = @{
                     label    = $MainGraphLabel
                     fontsize = "9"
@@ -298,8 +299,12 @@ function ConvertTo-DOTLanguage {
                 
                     $subgraphs
                 }
-
-                $Legend
+                
+                # graph legends only appear if edges exist between the nodes
+                # legends for now only represent the edges in the graph and if there are no edges there is no point showing legends in the graph
+                if ($edges){
+                    $Legend
+                }
             }
 
             # hack to fix issue because of double-quotes in image labels
