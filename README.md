@@ -135,6 +135,9 @@ Export-AzViz -ResourceGroup demo-2 -Theme light -OutputFormat png -Show -LabelVe
 
 ## Change Log
 
+### v1.2.1
+ - Fixed casing for `loadbalancer.png` in `AzViz/src/private/Images.ps1` to match the filename for `AzViz/icons/LoadBalancers.png` as AzViz could not find the icon when run from pwsh on a Linux VM. [pull-request](https://github.com/PrateekKumarSingh/AzViz/pull/59) by [@madsaune](https://github.com/madsaune)
+
 ### v1.2.0
 - Handled condition to skip resources out of resource group, this should fix [issue#37](https://github.com/PrateekKumarSingh/AzViz/issues/37) and [issue#39](https://github.com/PrateekKumarSingh/AzViz/issues/39) 
 - Handled period in resource group name, this should fix [issue#41](https://github.com/PrateekKumarSingh/AzViz/issues/41)
