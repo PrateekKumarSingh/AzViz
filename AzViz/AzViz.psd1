@@ -53,6 +53,8 @@ RequiredModules = @(
     @{ModuleName = 'PSGraph'; ModuleVersion = '2.1.38.27'}
     @{ModuleName = 'Az.Accounts';       ModuleVersion = '2.2.8'}
     @{ModuleName = 'Az.Resources';       ModuleVersion = '3.4.1'}
+    @{ModuleName = 'Az.Network'; ModuleVersion = '4.8.0'}
+    @{ModuleName = 'Az.Compute'; ModuleVersion = '4.13.0'}
 )
 
 # Assemblies that must be loaded prior to importing this module
