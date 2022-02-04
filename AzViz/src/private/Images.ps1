@@ -772,6 +772,7 @@ $Images = @{
     "Microsoft.KeyVault/locations/deletedManagedHSMs"                                            = "keyvaults.png"
     "Microsoft.KeyVault/vaults/keys"                                                             = "keyvaults.png"
     "Microsoft.KeyVault/vaults/keys/versions"                                                    = "keyvaults.png"
+    "Microsoft.ManagedIdentity/userAssignedIdentities"                                           = "managedidentities.png"
     "Microsoft.Media/mediaServices"                                                              = "mediaservices.png"
     "Microsoft.Network/ApplicationGateways"                                                      = "ApplicationGateway.png"
     "Microsoft.Network/frontdoors"                                                               = "FrontDoors.png"
