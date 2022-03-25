@@ -6,6 +6,7 @@ function Get-DOTExecutable {
         '/usr/local/bin/dot',
         '/usr/bin/dot'
     )
+    $PossibleGraphVizPaths += (Get-Command -Type Application -Name dot).Source
 
     $GraphViz = Resolve-Path -path $PossibleGraphVizPaths -ErrorAction SilentlyContinue | Get-Item | Where-Object BaseName -eq 'dot' | Select-Object -First 1
 
