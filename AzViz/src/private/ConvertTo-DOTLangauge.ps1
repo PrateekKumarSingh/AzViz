@@ -179,7 +179,14 @@ function ConvertTo-DOTLanguage {
                         }
                         elseif ($LabelVerbosity -eq 2) {
                             $nodes += Get-ImageNode -Name "$fromcateg/$from".tolower() -Rows ($from, $fromcateg) -Type $fromcateg -ErrorAction SilentlyContinue
-                            $nodes += Get-ImageNode -Name "$tocateg/$to".tolower() -Rows ($to, $toCateg) -Type $tocateg -ErrorAction SilentlyContinue
+
+                            # If this resource is a network association, it may not have the $toCateg defined, so it will be null.
+                            # This will fail inside Get-ImageNode when its trying to split and format the string
+                            if ([String]::IsNullOrEmpty($tocateg)) {
+                                $nodes += Get-ImageNode -Name "$tocateg/$to".tolower() -Rows $to -Type $tocateg -ErrorAction SilentlyContinue
+                            } else {
+                                $nodes += Get-ImageNode -Name "$tocateg/$to".tolower() -Rows ($to, $toCateg) -Type $tocateg -ErrorAction SilentlyContinue
+                            }
                         }
                     }
                     else {
