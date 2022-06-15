@@ -231,7 +231,7 @@ function ConvertTo-DOTLanguage {
             if ($Resources -or $VNets) {
                 $ResourceGroupLocation = (Get-AzResourceGroup -Name $Target.Name -Verbose:$false).Location
                 $ResourceGroupSubGraphName = [string]::Concat($(Remove-SpecialChars -String $Target.Name -SpecialChars $SpecialChars), $Counter)
-                $ResourceGroupSubGraphNameLabel = Get-ImageLabel -Type "ResourceGroups" -Row1 "ResourceGroup: $(Remove-SpecialChars -String $Target.name -SpecialChars $SpecialChars)" -Row2 "Location: $($ResourceGroupLocation)"
+                $ResourceGroupSubGraphNameLabel = Get-ImageLabel -Type "ResourceGroups" -Row1 "ResourceGroup: $($Target.name)" -Row2 "Location: $($ResourceGroupLocation)"
                 $ResourceGroupSubGraphAttributes = @{
                     label    = $ResourceGroupSubGraphNameLabel;
                     labelloc = 't';
@@ -291,7 +291,7 @@ function ConvertTo-DOTLanguage {
 
             $graph = Graph -Name 'Visualization' -Attributes $VisualizationAttributes -ScriptBlock {
                 
-                $MainGraphLabel = Get-ImageLabel -Type "Subscriptions" -Row1 "Subscription: $(Remove-SpecialChars -String $Subscription.name -SpecialChars $SpecialChars)" -Row2 "Id: $($Subscription.Id)"
+                $MainGraphLabel = Get-ImageLabel -Type "Subscriptions" -Row1 "Subscription: $($Subscription.name)" -Row2 "Id: $($Subscription.Id)"
                 $MainGraphAttributes = @{
                     label    = $MainGraphLabel
                     fontsize = "9"
