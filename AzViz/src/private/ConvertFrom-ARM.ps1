@@ -50,9 +50,15 @@ function ConvertFrom-ARM {
                 
             #region obtaining-arm-template
             switch ($TargetType) {
-                'Azure Resource Group' { 
-                    Write-CustomHost "Exporting ARM template of Azure resource group: `'$Target`'" -Indentation 1 -color Green
-                    $template = (Export-AzResourceGroup -ResourceGroupName $Target -SkipAllParameterization -Force -Path $temp_armtemplate -WarningAction SilentlyContinue -Verbose:$false).Path
+                'Azure Resource Group' {
+                    if ((Get-AzResource -ResourceGroupName $Target).Count -gt 200) {
+                        Write-CustomHost "Cannot Export ARM templete for resource groups with more than 200 resources due to Export-AzResourceGroup PowerShell conmmand limitation. Documentation: https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/export-template-portal" -Indentation 0 -color Red
+                        Start-Sleep -seconds 5
+                        exit
+                    } else {
+                        Write-CustomHost "Exporting ARM template of Azure resource group: `'$Target`'" -Indentation 1 -color Green
+                        $template = (Export-AzResourceGroup -ResourceGroupName $Target -SkipAllParameterization -Force -Path $temp_armtemplate -WarningAction SilentlyContinue -Verbose:$false).Path
+                    }
                 }
                 'File' { 
                     Write-CustomHost "Accessing ARM template from local file: `'$Target`'" -Indentation 2 -color Green
