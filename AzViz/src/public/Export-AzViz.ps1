@@ -270,7 +270,7 @@ function Export-AzViz {
 
         if ($graph) {
             @"
-strict $graph
+strict $($graph -join ' ')
 "@ | Export-PSGraph -GraphVizPath $GraphViz.FullName -ShowGraph:$Show -OutputFormat $OutputFormat -DestinationPath $OutputFilePath -OutVariable output |
             Out-Null
             Write-CustomHost "Visualization exported to path: $($output.fullname)" -Indentation 0 -color Magenta -AddTime
