@@ -19,7 +19,7 @@ Azure Visualizer aka 'AzViz' - PowerShell module to automatically generate Azure
 > _Cloud admins are not anymore doomed to manually document a cloud environment! The pain of inheriting an undocumented cloud landscape to support is gone 😎😉 so please share this project with your colleagues and friends._
 
 ## Important Note to AzViz Users
-> As the author of this PowerShell module, I’m exploring the idea of transforming AzViz into a cloud-agnostic, AI-powered web app. I’d love to hear your thoughts and feedback on this! 🚀
+> As the author of this PowerShell module, I’m exploring the idea of transforming AzViz into a cloud-agnostic, AI-powered SaaS web app. I’d love to hear your thoughts and feedback on this! 🚀
 
 - Participate in the Poll: https://github.com/PrateekKumarSingh/AzViz/discussions/127
 - Linkedin Post on why?: https://www.linkedin.com/feed/update/urn:li:activity:7288900178210693120/
