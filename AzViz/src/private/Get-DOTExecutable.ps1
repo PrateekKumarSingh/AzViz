@@ -4,7 +4,8 @@ function Get-DOTExecutable {
         'C:\Program Files\NuGet\Packages\Graphviz*\dot.exe',
         'C:\program files*\GraphViz*\bin\dot.exe',
         '/usr/local/bin/dot',
-        '/usr/bin/dot'
+        '/usr/bin/dot',
+        '/opt/homebrew/bin/dot'
     )
     $PossibleGraphVizPaths += (Get-Command -Type Application -Name dot).Source
 
